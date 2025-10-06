@@ -1,0 +1,56 @@
+import { Button } from '@/components/ui/button'
+import { ArrowRight, Users, BookOpen, Briefcase } from 'lucide-react'
+
+const Hero = () => {
+  return (
+    <section className="bg-gradient-to-br from-green-50 to-green-100 py-16 lg:py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
+            Portal de <span className="text-green-700">Agronomia</span>
+          </h1>
+          <p className="text-xl lg:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Conectando estudantes e professores para oportunidades de estágio, PVA e iniciação científica
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Button size="lg" className="bg-green-700 hover:bg-green-800">
+              Ver Oportunidades
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button size="lg" variant="outline" className="border-green-700 text-green-700 hover:bg-green-50">
+              Conhecer Professores
+            </Button>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+            <div className="text-center">
+              <div className="bg-white rounded-lg p-6 shadow-md">
+                <Users className="h-12 w-12 text-green-700 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">50+</h3>
+                <p className="text-gray-600">Professores</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="bg-white rounded-lg p-6 shadow-md">
+                <BookOpen className="h-12 w-12 text-green-700 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">12</h3>
+                <p className="text-gray-600">Departamentos</p>
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="bg-white rounded-lg p-6 shadow-md">
+                <Briefcase className="h-12 w-12 text-green-700 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">100+</h3>
+                <p className="text-gray-600">Oportunidades Anuais</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default Hero
