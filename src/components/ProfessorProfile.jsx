@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react'; // Importa useState e useEffect
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
   ArrowLeft, Mail, Phone, Building, BookOpen, Users, Award, ExternalLink, MessageCircle
 } from 'lucide-react';
 
-// O componente espera receber o objeto `professor` básico do App.jsx
-const ProfessorProfile = ({ professor, onBack }) => {
+// =================================================================================
+// ALTERAÇÃO 1 DE 2: Adicionado 'onOpportunityClick' aqui.
+// =================================================================================
+const ProfessorProfile = ({ professor, onBack, onOpportunityClick }) => {
   const [showContactForm, setShowContactForm] = useState(false);
 
   // 1. ESTADOS PARA DADOS DETALHADOS, CARREGAMENTO E ERRO
@@ -92,10 +94,10 @@ const ProfessorProfile = ({ professor, onBack }) => {
     bio: detailedData?.biografia || 'Biografia não disponível.',
     // Campos que são listas/arrays
     courses: detailedData?.disciplinas ? detailedData.disciplinas.split(',') : [],
-    researchProjects: detailedData?.projetos_pesquisa ? detailedData.projetos_pesquisa.split(',') : [],
-    currentStudents: detailedData?.estudantes_orientados || [], // Assumindo que a API retorna um array de objetos
-    publications: detailedData?.publicacoes ? detailedData.publicacoes.split(',') : [],
-    availableOpportunities: detailedData?.oportunidades_disponiveis || [], // Assumindo que a API retorna um array de objetos
+    researchProjects: detailedData?.projetos_pesquisa || [],
+    currentStudents: detailedData?.orientacoes || [], // Assumindo que a API retorna um array de objetos
+    publications: detailedData?.publicacoes || [],
+    oportunidades: detailedData?.oportunidades || [], // Assumindo que a API retorna um array de objetos
   };
 
   // =================================================================================
@@ -199,52 +201,79 @@ const ProfessorProfile = ({ professor, onBack }) => {
             </ul>
           </div>
 
-          {/* Research Projects */}
+          {/* Research Projects - VERSÃO CORRIGIDA E FINAL */}
           <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               <Award className="h-5 w-5 inline mr-2" />
               Projetos de Pesquisa
             </h2>
             <div className="space-y-4">
-              {mergedProfessor.researchProjects.map((project, index) => (
-                <div key={index} className="border-l-4 border-green-500 pl-4">
-                  <h3 className="font-medium text-gray-900">{project.title}</h3>
-                  <p className="text-sm text-gray-600">
-                    Financiamento: {project.funding} | Período: {project.period}
-                  </p>
-                </div>
-              ))}
+              {/* Verificamos se a lista de projetos não está vazia */}
+              {mergedProfessor.researchProjects && mergedProfessor.researchProjects.length > 0 ? (
+                mergedProfessor.researchProjects.map((project) => (
+                  // Usamos project.id como key para melhor performance e consistência
+                  <div key={project.id} className="border-l-4 border-green-500 pl-4 py-2 hover:bg-gray-50">
+                    {/* 
+                      Acessamos as propriedades do objeto 'project' que vêm da API.
+                      Os nomes (titulo, financiamento, periodo) correspondem às colunas da sua nova tabela.
+                    */}
+                    <h3 className="font-medium text-gray-900">{project.titulo}</h3>
+                    <p className="text-sm text-gray-600">
+                      Financiamento: {project.financiamento || 'Não informado'} | Período: {project.periodo || 'Não informado'}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                // Mensagem exibida se não houver projetos
+                <p className="text-gray-600">Nenhum projeto de pesquisa informado no momento.</p>
+              )}
             </div>
           </div>
 
-          {/* Current Students */}
+
+          {/* Current Students - VERSÃO FINAL */}
           <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">
               <Users className="h-5 w-5 inline mr-2" />
               Estudantes Orientados
             </h2>
             <div className="space-y-3">
-              {mergedProfessor.currentStudents.map((student, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="font-medium text-gray-900">{student.name}</p>
-                    <p className="text-sm text-gray-600">{student.project}</p>
+              {/* Agora o .map() vai funcionar, pois 'currentStudents' é uma lista de objetos */}
+              {mergedProfessor.currentStudents.length > 0 ? (
+                mergedProfessor.currentStudents.map((student, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100">
+                    <div>
+                      {/* Usamos os nomes das colunas da nova tabela */}
+                      <p className="font-medium text-gray-900">{student.nome_estudante}</p>
+                      <p className="text-sm text-gray-600">{student.titulo_projeto || 'Projeto não especificado'}</p>
+                    </div>
+                    {/* Exibindo o tipo e o período */}
+                    <div className="text-right">
+                      <Badge className={
+                        student.tipo_orientacao === 'IC' ? 'bg-purple-100 text-purple-800' :
+                          student.tipo_orientacao === 'Mestrado' ? 'bg-blue-100 text-blue-800' :
+                            'bg-green-100 text-green-800'
+                      }>
+                        {student.tipo_orientacao}
+                      </Badge>
+                      <p className="text-xs text-gray-500 mt-1">{student.periodo}</p>
+                    </div>
                   </div>
-                  <Badge className={student.type === 'IC' ? 'bg-purple-100 text-purple-800' : student.type === 'Estágio' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'}>
-                    {student.type}
-                  </Badge>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-gray-600">Este professor não possui orientandos no momento.</p>
+              )}
             </div>
           </div>
+
 
           {/* Available Opportunities */}
           <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Oportunidades Disponíveis</h2>
-            {professor.oportunidades && professor.oportunidades.length > 0 ? (
+            {mergedProfessor.oportunidades && mergedProfessor.oportunidades.length > 0 ? (
               <div className="space-y-4">
-                {professor.oportunidades.map((opportunity, index) => (
-                  <div key={index} className="border border-gray-200 rounded-lg p-4">
+                {mergedProfessor.oportunidades.map((opportunity, index) => (
+                  <div key={opportunity.id || index} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center gap-3 mb-2">
                       <Badge className={
                         opportunity.tipo === 'IC' ? 'bg-purple-100 text-purple-800' :
@@ -256,9 +285,18 @@ const ProfessorProfile = ({ professor, onBack }) => {
                       <h3 className="font-medium text-gray-900">{opportunity.titulo}</h3>
                     </div>
                     <p className="text-gray-700 text-sm mb-3">{opportunity.descricao}</p>
-                    <Button size="sm" className="bg-green-700 hover:bg-green-800">
+
+                    {/* ================================================================================= */}
+                    {/* ALTERAÇÃO 2 DE 2: O botão agora chama a função 'onOpportunityClick'. */}
+                    {/* ================================================================================= */}
+                    <Button
+                      size="sm"
+                      className="bg-green-700 hover:bg-green-800"
+                      onClick={() => onOpportunityClick(opportunity.id)}
+                    >
                       Ver detalhes da vaga
                     </Button>
+
                   </div>
                 ))}
               </div>
@@ -267,16 +305,33 @@ const ProfessorProfile = ({ professor, onBack }) => {
             )}
           </div>
 
-
           {/* Recent Publications */}
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">Publicações Recentes</h2>
-            <ul className="space-y-2">
-              {mergedProfessor.publications.map((publication, index) => (
-                <li key={index} className="text-gray-700 text-sm">• {publication}</li>
-              ))}
-            </ul>
+            <div className="space-y-4">
+              {mergedProfessor.publications && mergedProfessor.publications.length > 0 ? (
+                mergedProfessor.publications.map((pub) => (
+                  <div key={pub.id}>
+                    <a
+                      href={pub.link_publicacao || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-medium text-gray-900 hover:text-green-700 transition-colors"
+                    >
+                      {pub.titulo}
+                    </a>
+                    <p className="text-sm text-gray-600">{pub.autores}</p>
+                    <p className="text-xs text-gray-500">
+                      {pub.revista_ou_conferencia}, {pub.ano}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-600">Nenhuma publicação informada.</p>
+              )}
+            </div>
           </div>
+
         </div>
       </div>
 

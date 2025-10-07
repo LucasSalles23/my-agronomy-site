@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     const fetchProfessors = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/professors');
+        const response = await fetch('http://localhost:5000/api/professors' );
         const data = await response.json();
         setProfessors(data);
       } catch (error) {
@@ -37,11 +37,18 @@ function App() {
 
   // --- HANDLERS ---
 
-  // Clique em uma oportunidade
+  // =================================================================================
+  // CORREÇÃO APLICADA AQUI
+  // A versão antiga (que causava a "travada") foi comentada para você não perder nada.
+  // A nova versão, mais rápida, está ativa logo abaixo.
+  // =================================================================================
+
+  /*
+  // VERSÃO ANTIGA - Buscava os dados ANTES de mudar a página
   const handleOpportunityClick = async (opportunityId) => {
     console.log("Clicou na oportunidade com ID:", opportunityId);
     try {
-      const response = await fetch(`http://localhost:5000/api/oportunidades_detalhes/${opportunityId}`);
+      const response = await fetch(`http://localhost:5000/api/oportunidades_detalhes/${opportunityId}` );
       console.log("Resposta do fetch:", response);
       if (!response.ok) throw new Error(`Oportunidade não encontrada: ${response.status}`);
 
@@ -54,6 +61,15 @@ function App() {
       alert("Não foi possível carregar a oportunidade. Tente novamente.");
     }
   };
+  */
+
+  // NOVA VERSÃO - Muda a página IMEDIATAMENTE e deixa a página de detalhes buscar os dados.
+  const handleOpportunityClick = (opportunityId) => {
+    console.log("[App.jsx] Oportunidade selecionada. Guardando ID:", opportunityId);
+    setSelectedOpportunity({ id: opportunityId }); // Apenas guarda o ID
+    setCurrentPage('opportunity-detail'); // Muda a página na hora
+  };
+
 
   // Clique em um professor
   const handleProfessorClick = (professorId) => {
@@ -87,13 +103,13 @@ function App() {
           <>
             <Hero />
             <NewsSection onNewsClick={handleNewsClick} />
-            <OpportunitiesSection 
+            <OpportunitiesSection
               onOpportunityClick={handleOpportunityClick}
               onNavigate={handleNavigation} // ✅ Adicionado
             />
-            <DepartmentsPage 
-              onProfessorClick={handleProfessorClick} 
-              professors={professors} 
+            <DepartmentsPage
+              onProfessorClick={handleProfessorClick}
+              professors={professors}
             />
           </>
         );
@@ -109,7 +125,7 @@ function App() {
 
       case 'opportunities':
         return (
-          <OpportunitiesSection 
+          <OpportunitiesSection
             onOpportunityClick={handleOpportunityClick}
             onNavigate={handleNavigation} // ✅ Adicionado
           />
@@ -132,6 +148,7 @@ function App() {
           <ProfessorProfile
             professor={selectedProfessor}
             onBack={() => handleNavigation('home')}
+            onOpportunityClick={handleOpportunityClick}
           />
         );
 
@@ -140,7 +157,7 @@ function App() {
           <>
             <Hero />
             <NewsSection onNewsClick={handleNewsClick} />
-            <OpportunitiesSection 
+            <OpportunitiesSection
               onOpportunityClick={handleOpportunityClick}
               onNavigate={handleNavigation} // ✅ Garante fallback
             />
