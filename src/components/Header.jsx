@@ -16,10 +16,10 @@ const Header = ({ onNavigate }) => {
           {/* Logo */}
           <div className="flex items-center">
             <div className="text-2xl font-bold text-green-700">
-              Portal Agronomia
+              Impulso Agro
             </div>
             <div className="ml-2 text-sm text-gray-600 hidden sm:block">
-              Universidade
+              UFPR
             </div>
           </div>
 

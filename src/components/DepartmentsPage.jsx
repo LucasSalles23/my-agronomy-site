@@ -1,233 +1,65 @@
-import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { 
-  Building, 
-  Users, 
-  BookOpen, 
-  FlaskConical,
+// ARQUIVO: src/components/DepartmentsPage.jsx (Versão Final com Contato Dinâmico)
+
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  Building,
+  Users,
+  BookOpen,
   ArrowRight,
   Mail,
   Phone
-} from 'lucide-react'
+} from 'lucide-react';
 
+// O componente recebe 'onProfessorClick' do App.jsx para navegação
 const DepartmentsPage = ({ onProfessorClick }) => {
-  const [selectedDepartment, setSelectedDepartment] = useState(null)
+  // --- ESTADOS DO COMPONENTE ---
+  const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [departments, setDepartments] = useState([]); // Armazenará os dados da API
+  const [loading, setLoading] = useState(true);       // Controla a mensagem "Carregando..."
+  const [error, setError] = useState(null);           // Armazena mensagens de erro
 
-  const departments = [
-    {
-      id: 1,
-      name: "Ciência do Solo",
-      description: "Desenvolve atividades nas áreas de Solos; Fertilização de Culturas; Nutrição Mineral Vegetal; Microbiologia do solo, incluindo características minerais, físicas, químicas e biológicas.",
-      disciplines: [
-        {
-          name: "Fertilidade do Solo",
-          professors: [
-            { name: "Prof. Carlos Eduardo Pellegrino Cerri", specialization: "Matéria Orgânica do Solo" },
-            { name: "Prof. Paulo Sérgio Pavinato", specialization: "Fertilidade do Solo" }
-          ]
-        },
-        {
-          name: "Microbiologia do Solo",
-          professors: [
-            { name: "Prof. Fernando Dini Andreote", specialization: "Microbiologia Molecular" }
-          ]
-        },
-        {
-          name: "Manejo e Conservação do Solo",
-          professors: [
-            { name: "Prof. Maurício Roberto Cherubin", specialization: "Manejo e saúde do solo" }
-          ]
+  // --- BUSCA DE DADOS DA API ---
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('http://localhost:5000/api/departamentos');
+        if (!response.ok) {
+          throw new Error('Falha ao buscar os dados dos departamentos.');
         }
-      ],
-      contact: {
-        email: "solos@usp.br",
-        phone: "(19) 3417-2100",
-        head: "Prof. Fernando Dini Andreote"
-      },
-      stats: {
-        professors: 22,
-        students: 150,
-        courses: 8
+        const data = await response.json();
+        setDepartments(data); // Armazena os dados recebidos da API no estado
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    },
-    {
-      id: 2,
-      name: "Genética",
-      description: "Desenvolve atividades nas áreas de Genética e Melhoramento de Plantas, Genética Quantitativa, Genética e Genômica de Populações, Estatística Genética, Genética de Microrganismos.",
-      disciplines: [
-        {
-          name: "Melhoramento de Plantas",
-          professors: [
-            { name: "Prof. Roberto Fritsche-Neto", specialization: "Melhoramento de Plantas" }
-          ]
-        },
-        {
-          name: "Genética Molecular",
-          professors: [
-            { name: "Prof. Maria Lucia Carneiro Vieira", specialization: "Genética Molecular" }
-          ]
-        },
-        {
-          name: "Fisiologia Vegetal",
-          professors: [
-            { name: "Prof. Marina Luciana Abreu de Melo", specialization: "Fisiologia Vegetal" }
-          ]
-        }
-      ],
-      contact: {
-        email: "genetica@usp.br",
-        phone: "(19) 3447-8621",
-        head: "Prof. Roberto Fritsche-Neto"
-      },
-      stats: {
-        professors: 15,
-        students: 120,
-        courses: 6
-      }
-    },
-    {
-      id: 3,
-      name: "Fitopatologia e Nematologia",
-      description: "Desenvolve atividades nas áreas de Fitoplasmas de bactérias patogênicas vegetais; Doenças Pós-Colheita; Epidemiologia e Controle de Doenças de Plantas; Patologia Bioquímica e Fisiológica de Plantas.",
-      disciplines: [
-        {
-          name: "Epidemiologia de Doenças",
-          professors: [
-            { name: "Prof. Lilian Amorim", specialization: "Epidemiologia" }
-          ]
-        },
-        {
-          name: "Nematologia Vegetal",
-          professors: [
-            { name: "Prof. Tiago Osório Ferreira", specialization: "Nematologia Vegetal" }
-          ]
-        },
-        {
-          name: "Virologia Vegetal",
-          professors: [
-            { name: "Prof. Jorge Rezende", specialization: "Virologia Vegetal" }
-          ]
-        }
-      ],
-      contact: {
-        email: "fitopatologia@usp.br",
-        phone: "(19) 3429-4124",
-        head: "Prof. Lilian Amorim"
-      },
-      stats: {
-        professors: 18,
-        students: 90,
-        courses: 7
-      }
-    },
-    {
-      id: 4,
-      name: "Ciências Florestais",
-      description: "Desenvolve atividades nas áreas de Silvicultura; Gestão florestal; Ecologia e Tecnologia Aplicada de Produtos Florestais, com o objetivo de avaliar, planejar e gerenciar um uso e conservação sustentável dos recursos florestais.",
-      disciplines: [
-        {
-          name: "Manejo Florestal",
-          professors: [
-            { name: "Prof. Luiz Carlos Estraviz Rodriguez", specialization: "Manejo Florestal" }
-          ]
-        },
-        {
-          name: "Silvicultura",
-          professors: [
-            { name: "Prof. José Leonardo Gonçalves", specialization: "Silvicultura" }
-          ]
-        },
-        {
-          name: "Tecnologia da Madeira",
-          professors: [
-            { name: "Prof. Francides Silva", specialization: "Tecnologia da Madeira" }
-          ]
-        }
-      ],
-      contact: {
-        email: "florestal@usp.br",
-        phone: "(19) 3447-6621",
-        head: "Prof. José Leonardo Gonçalves"
-      },
-      stats: {
-        professors: 20,
-        students: 110,
-        courses: 9
-      }
-    },
-    {
-      id: 5,
-      name: "Produção Vegetal",
-      description: "Desenvolve atividades nas áreas de Irrigação; Modelagem de Culturas; Agricultura orgânica; Ciência de plantas daninhas; Horticultura; Plantas Medicinais e Aromáticas; Produção, Análise e Processamento de Sementes.",
-      disciplines: [
-        {
-          name: "Horticultura",
-          professors: [
-            { name: "Prof. Simone Rodrigues", specialization: "Horticultura" }
-          ]
-        },
-        {
-          name: "Plantas Daninhas",
-          professors: [
-            { name: "Prof. Pedro Christoffoleti", specialization: "Plantas Daninhas" }
-          ]
-        },
-        {
-          name: "Fisiologia Pós-Colheita",
-          professors: [
-            { name: "Prof. Ricardo Kluge", specialization: "Fisiologia Pós-Colheita" }
-          ]
-        }
-      ],
-      contact: {
-        email: "producao@usp.br",
-        phone: "(19) 3447-8530",
-        head: "Prof. Ricardo Kluge"
-      },
-      stats: {
-        professors: 25,
-        students: 180,
-        courses: 12
-      }
-    },
-    {
-      id: 6,
-      name: "Entomologia e Acarologia",
-      description: "Desenvolve atividades em três áreas principais de pesquisa: Taxonomia de Insetos e Bioecologia; Interações Artrópodes-Planta-Microrganismos; Estratégias para Manejo de Pragas de Insetos.",
-      disciplines: [
-        {
-          name: "Controle Biológico de Pragas",
-          professors: [
-            { name: "Prof. José Roberto Postali Parra", specialization: "Controle Biológico" }
-          ]
-        },
-        {
-          name: "Ecologia de Insetos",
-          professors: [
-            { name: "Prof. Wesley Godoy", specialization: "Ecologia de Insetos" }
-          ]
-        },
-        {
-          name: "Manejo Integrado de Pragas",
-          professors: [
-            { name: "Prof. Celso Omoto", specialization: "Manejo de Resistência" }
-          ]
-        }
-      ],
-      contact: {
-        email: "entomologia@usp.br",
-        phone: "(19) 3429-4199",
-        head: "Prof. José Roberto Postali Parra"
-      },
-      stats: {
-        professors: 16,
-        students: 85,
-        courses: 5
-      }
+    };
+
+    fetchDepartments();
+  }, []);
+
+  // --- FUNÇÃO AUXILIAR PARA NAVEGAÇÃO ---
+  const handleProfessorCardClick = (profId) => {
+    if (onProfessorClick) {
+      onProfessorClick(profId);
+    } else {
+      console.warn("onProfessorClick não foi fornecido como prop.");
     }
-  ]
+  };
 
+  // --- RENDERIZAÇÃO CONDICIONAL PARA LOADING E ERRO ---
+  if (loading) {
+    return <section className="py-16 text-center">Carregando departamentos...</section>;
+  }
+
+  if (error) {
+    return <section className="py-16 text-center text-red-500">Erro ao carregar: {error}</section>;
+  }
+
+  // --- JSX COMPLETO E DINÂMICO ---
   return (
     <section className="py-16 bg-gray-50" id="departamentos">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -251,26 +83,26 @@ const DepartmentsPage = ({ onProfessorClick }) => {
                       <Building className="h-6 w-6 text-green-700" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 ml-3">
-                      {dept.name}
+                      {dept.nome}
                     </h3>
                   </div>
 
                   <p className="text-gray-600 mb-4 line-clamp-3">
-                    {dept.description}
+                    {dept.descricao}
                   </p>
 
                   {/* Stats */}
                   <div className="grid grid-cols-3 gap-4 mb-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-green-700">{dept.stats.professors}</div>
+                      <div className="text-2xl font-bold text-green-700">{dept.quantidade_professores}</div>
                       <div className="text-xs text-gray-600">Professores</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-green-700">{dept.stats.students}</div>
+                      <div className="text-2xl font-bold text-green-700">N/A</div>
                       <div className="text-xs text-gray-600">Estudantes</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-green-700">{dept.stats.courses}</div>
+                      <div className="text-2xl font-bold text-green-700">{dept.disciplinas.length}</div>
                       <div className="text-xs text-gray-600">Disciplinas</div>
                     </div>
                   </div>
@@ -278,20 +110,20 @@ const DepartmentsPage = ({ onProfessorClick }) => {
                   {/* Disciplines Preview */}
                   <div className="mb-4">
                     <div className="flex flex-wrap gap-1">
-                      {dept.disciplines.slice(0, 3).map((discipline, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {discipline.name}
+                      {dept.disciplinas.slice(0, 3).map((discipline) => (
+                        <Badge key={discipline.id} variant="secondary" className="text-xs">
+                          {discipline.nome}
                         </Badge>
                       ))}
-                      {dept.disciplines.length > 3 && (
+                      {dept.disciplinas.length > 3 && (
                         <Badge variant="outline" className="text-xs">
-                          +{dept.disciplines.length - 3} mais
+                          +{dept.disciplinas.length - 3} mais
                         </Badge>
                       )}
                     </div>
                   </div>
 
-                  <Button 
+                  <Button
                     onClick={() => setSelectedDepartment(dept)}
                     className="w-full bg-green-700 hover:bg-green-800"
                   >
@@ -304,8 +136,8 @@ const DepartmentsPage = ({ onProfessorClick }) => {
           </div>
         ) : (
           /* Department Detail */
-          <div className="max-w-4xl mx-auto">
-            <Button 
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Button
               onClick={() => setSelectedDepartment(null)}
               variant="ghost"
               className="mb-6 text-green-700 hover:text-green-800"
@@ -318,27 +150,22 @@ const DepartmentsPage = ({ onProfessorClick }) => {
               <div className="bg-green-700 text-white p-6">
                 <div className="flex items-center mb-4">
                   <Building className="h-8 w-8 mr-3" />
-                  <h1 className="text-3xl font-bold">{selectedDepartment.name}</h1>
+                  <h1 className="text-3xl font-bold">{selectedDepartment.nome}</h1>
                 </div>
-                <p className="text-green-100 text-lg">{selectedDepartment.description}</p>
+                <p className="text-green-100 text-lg">{selectedDepartment.descricao}</p>
               </div>
 
               <div className="p-6">
                 {/* Stats */}
-                <div className="grid grid-cols-3 gap-6 mb-8">
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <div className="grid grid-cols-2 gap-6 mb-8">
+                  <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
                     <Users className="h-8 w-8 text-green-700 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">{selectedDepartment.stats.professors}</div>
+                    <div className="text-2xl font-bold text-gray-900">{selectedDepartment.quantidade_professores}</div>
                     <div className="text-gray-600">Professores</div>
                   </div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <Users className="h-8 w-8 text-green-700 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">{selectedDepartment.stats.students}</div>
-                    <div className="text-gray-600">Estudantes</div>
-                  </div>
-                  <div className="text-center p-4 bg-gray-50 rounded-lg">
+                  <div className="text-center p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg">
                     <BookOpen className="h-8 w-8 text-green-700 mx-auto mb-2" />
-                    <div className="text-2xl font-bold text-gray-900">{selectedDepartment.stats.courses}</div>
+                    <div className="text-2xl font-bold text-gray-900">{selectedDepartment.disciplinas.length}</div>
                     <div className="text-gray-600">Disciplinas</div>
                   </div>
                 </div>
@@ -351,25 +178,29 @@ const DepartmentsPage = ({ onProfessorClick }) => {
                       Disciplinas e Professores
                     </h3>
                     <div className="space-y-6">
-                      {selectedDepartment.disciplines.map((discipline, discIndex) => (
-                        <div key={discIndex} className="bg-gray-50 p-4 rounded-lg shadow-sm">
-                          <h4 className="text-lg font-semibold text-gray-800 mb-3">{discipline.name}</h4>
+                      {selectedDepartment.disciplinas.map((discipline) => (
+                        <div key={discipline.id} className="bg-gray-50 p-4 rounded-lg shadow-sm">
+                          <h4 className="text-lg font-semibold text-gray-800 mb-3">{discipline.nome}</h4>
                           <div className="space-y-3">
-                            {discipline.professors.map((prof, profIndex) => (
-                              <div key={profIndex} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div>
-                                  <p className="font-medium text-gray-900">{prof.name}</p>
-                                  <p className="text-sm text-gray-600">{prof.specialization}</p>
+                            {discipline.professores.length > 0 ? (
+                              discipline.professores.map((prof) => (
+                                <div key={prof.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-100 transition-colors">
+                                  <div>
+                                    <p className="font-medium text-gray-900">{prof.nome}</p>
+                                    <p className="text-sm text-gray-600">{prof.especializacao}</p>
+                                  </div>
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => handleProfessorCardClick(prof.id)}
+                                  >
+                                    Ver perfil
+                                  </Button>
                                 </div>
-                                <Button 
-                                  size="sm" 
-                                  variant="outline"
-                                  onClick={() => onProfessorClick && onProfessorClick(prof)}
-                                >
-                                  Ver perfil
-                                </Button>
-                              </div>
-                            ))}
+                              ))
+                            ) : (
+                              <p className="text-sm text-gray-500 px-3">Nenhum professor associado a esta disciplina.</p>
+                            )}
                           </div>
                         </div>
                       ))}
@@ -377,7 +208,7 @@ const DepartmentsPage = ({ onProfessorClick }) => {
                   </div>
                 </div>
 
-                {/* Contact Information */}
+                {/* Contact Information (DINÂMICO) */}
                 <div className="mt-8 p-6 bg-gray-50 rounded-lg">
                   <h3 className="text-xl font-semibold text-gray-900 mb-4">Informações de Contato</h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -385,25 +216,26 @@ const DepartmentsPage = ({ onProfessorClick }) => {
                       <Mail className="h-5 w-5 text-green-700 mr-3" />
                       <div>
                         <p className="text-sm text-gray-600">E-mail</p>
-                        <p className="font-medium">{selectedDepartment.contact.email}</p>
+                        <p className="font-medium">{selectedDepartment.email || 'Não informado'}</p>
                       </div>
                     </div>
                     <div className="flex items-center">
                       <Phone className="h-5 w-5 text-green-700 mr-3" />
                       <div>
                         <p className="text-sm text-gray-600">Telefone</p>
-                        <p className="font-medium">{selectedDepartment.contact.phone}</p>
+                        <p className="font-medium">{selectedDepartment.telefone || 'Não informado'}</p>
                       </div>
                     </div>
                     <div className="flex items-center">
                       <Users className="h-5 w-5 text-green-700 mr-3" />
                       <div>
                         <p className="text-sm text-gray-600">Chefe do Departamento</p>
-                        <p className="font-medium">{selectedDepartment.contact.head}</p>
+                        <p className="font-medium">{selectedDepartment.chefe_de_departamento || 'Não informado'}</p>
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -413,4 +245,4 @@ const DepartmentsPage = ({ onProfessorClick }) => {
   )
 }
 
-export default DepartmentsPage
+export default DepartmentsPage;

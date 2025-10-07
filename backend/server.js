@@ -36,6 +36,9 @@ app.use('/api/oportunidades_detalhes', oportunidadesDetalhesRoutes);
 //---------------------------------------------------------------//
 
 
+// Rota para os departamentos
+const departamentosRoutes = require('./routes/departamentoRoute');
+app.use('/api/departamentos', departamentosRoutes);
 
 
 const PORT = 5000;

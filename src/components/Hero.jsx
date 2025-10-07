@@ -7,12 +7,12 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
-            Portal de <span className="text-green-700">Agronomia</span>
+            Impulso <span className="text-green-700">Agro</span>
           </h1>
           <p className="text-xl lg:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
             Conectando estudantes e professores para oportunidades de estágio, PVA e iniciação científica
           </p>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button size="lg" className="bg-green-700 hover:bg-green-800">
               Ver Oportunidades

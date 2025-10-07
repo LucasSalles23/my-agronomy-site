@@ -34,7 +34,7 @@ const NewsSection = ({ onNewsClick }) => {
             Últimas Notícias
           </h2>
           <p className="text-xl text-gray-600">
-            Fique por dentro das novidades do curso de Agronomia
+            Fique por dentro das novidades do mundo agro
           </p>
         </div>
 

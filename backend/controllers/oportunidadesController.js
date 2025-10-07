@@ -1,15 +1,26 @@
 const db = require('../db'); // conexão com mysql2/promise
 
-// --- 1. Buscar todas as oportunidades ---
+// --- 1. Buscar todas as oportunidades (JÁ ESTAVA CORRETO) ---
 exports.getAllOpportunities = async (req, res) => {
   const sql = `
     SELECT 
-        o.id, o.titulo, o.tipo, o.descricao, o.data_publicacao AS publishDate,
-        p.nome AS professor, p.departamento AS department
-    FROM oportunidades o
-    LEFT JOIN professores p ON o.professor_id = p.id
-    ORDER BY o.data_publicacao DESC;
+        o.id, 
+        o.titulo, 
+        o.tipo, 
+        o.descricao, 
+        o.data_publicacao AS publishDate,
+        p.nome AS professor,
+        d.nome AS department
+    FROM 
+        oportunidades o
+    LEFT JOIN 
+        professores p ON o.professor_id = p.id
+    LEFT JOIN 
+        departamentos d ON p.departamento_id = d.id -- Junta com a tabela de departamentos
+    ORDER BY 
+        o.data_publicacao DESC;
   `;
+
   try {
     const [rows] = await db.query(sql);
     res.json(rows);
@@ -19,18 +30,36 @@ exports.getAllOpportunities = async (req, res) => {
   }
 };
 
-// --- 2. Buscar uma oportunidade pelo ID ---
+
+// --- 2. Buscar uma oportunidade pelo ID (AGORA CORRIGIDO) ---
 exports.getOpportunityById = async (req, res) => {
   const { id } = req.params;
+  
+  // A consulta SQL agora é idêntica à de cima, mas com o 'WHERE o.id = ?'
+  const sql = `
+    SELECT 
+        o.id, 
+        o.titulo, 
+        o.tipo, 
+        o.descricao, 
+        o.data_publicacao AS publishDate,
+        p.id AS professor_id, 
+        p.nome AS professor,
+        -- CORREÇÃO: Busca o nome da tabela 'departamentos'
+        d.nome AS department
+    FROM 
+        oportunidades o
+    LEFT JOIN 
+        professores p ON o.professor_id = p.id
+    -- CORREÇÃO: Adiciona o JOIN com a tabela de departamentos
+    LEFT JOIN 
+        departamentos d ON p.departamento_id = d.id
+    WHERE 
+        o.id = ?
+  `;
+
   try {
-    const [rows] = await db.query(`
-      SELECT 
-        o.id, o.titulo, o.tipo, o.descricao, o.data_publicacao AS publishDate,
-        p.id AS professor_id, p.nome AS professor, p.departamento AS department
-      FROM oportunidades o
-      LEFT JOIN professores p ON o.professor_id = p.id
-      WHERE o.id = ?
-    `, [id]);
+    const [rows] = await db.query(sql, [id]);
 
     if (!rows.length) {
       return res.status(404).json({ message: 'Oportunidade não encontrada' });
@@ -42,6 +71,8 @@ exports.getOpportunityById = async (req, res) => {
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 };
+
+// ... (suas outras funções, se houver)
 
 
 // --- 3. Criar oportunidade ---

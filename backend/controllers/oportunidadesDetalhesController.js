@@ -2,8 +2,7 @@
 
 const db = require('../db');
 
-// --- LISTAR TODOS (AJUSTADO) ---
-// Ajustado para retornar os campos que a lista principal precisa (id, titulo, etc.)
+// --- LISTAR TODOS (CORRIGIDO) ---
 const getAllOportunidadesDetalhes = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -13,10 +12,12 @@ const getAllOportunidadesDetalhes = async (req, res) => {
         o.descricao, 
         o.tipo,
         p.nome AS professor_nome,
-        p.departamento AS professor_departamento
+        -- Busca o nome da tabela 'departamentos'
+        dep.nome AS professor_departamento
       FROM oportunidades o
-      JOIN oportunidades_detalhes d ON o.id = d.oportunidade_id
-      JOIN professores p ON d.professor_id = p.id
+      JOIN professores p ON o.professor_id = p.id
+      -- CORREÇÃO: Garantindo que o nome da tabela é 'departamentos' (plural)
+      JOIN departamentos dep ON p.departamento_id = dep.id
       ORDER BY o.data_publicacao DESC
     `);
     res.json(rows);
@@ -27,9 +28,8 @@ const getAllOportunidadesDetalhes = async (req, res) => {
 };
 
 // --- PEGAR POR ID (CORRIGIDO) ---
-// A correção mais importante está aqui.
 const getOportunidadeDetalhesById = async (req, res) => {
-  const { id } = req.params; // Este é o ID da OPORTUNIDADE, vindo da URL.
+  const { id } = req.params;
   try {
     const [rows] = await db.query(`
       SELECT 
@@ -37,11 +37,14 @@ const getOportunidadeDetalhesById = async (req, res) => {
         d.carga_horaria, d.duracao, d.bolsa, d.requisitos, d.atividades,
         p.nome AS professor_nome,
         p.email AS professor_email,
-        p.departamento AS professor_departamento
+        -- Busca o nome da tabela 'departamentos'
+        dep.nome AS professor_departamento
       FROM oportunidades o
       JOIN oportunidades_detalhes d ON o.id = d.oportunidade_id
-      JOIN professores p ON d.professor_id = p.id
-      WHERE o.id = ?`, // <<< CORRIGIDO: Buscando pelo ID da tabela 'oportunidades'
+      JOIN professores p ON o.professor_id = p.id
+      -- CORREÇÃO: Garantindo que o nome da tabela é 'departamentos' (plural)
+      JOIN departamentos dep ON p.departamento_id = dep.id
+      WHERE o.id = ?`,
       [id]
     );
 
@@ -49,7 +52,6 @@ const getOportunidadeDetalhesById = async (req, res) => {
       return res.status(404).json({ message: 'Detalhes da oportunidade não encontrados' });
     }
 
-    // Renomeia os campos para corresponder ao que o frontend espera, evitando confusão.
     const data = rows[0];
     const responseData = {
       ...data,
@@ -69,6 +71,14 @@ const getOportunidadeDetalhesById = async (req, res) => {
     res.status(500).json({ message: 'Erro ao buscar detalhes da oportunidade' });
   }
 };
+
+// Exporta as funções corrigidas
+module.exports = {
+  getAllOportunidadesDetalhes,
+  getOportunidadeDetalhesById,
+  // ... suas outras funções
+};
+
 
 
 // --- CRIAR, ATUALIZAR, DELETAR (Mantidos como estavam) ---

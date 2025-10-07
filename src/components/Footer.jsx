@@ -95,7 +95,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-300">
-            © 2025 Portal Agronomia - Universidade. Todos os direitos reservados.
+            © 2025 Impulso Agro - UFPR | O próximo passo é o sucesso!
           </p>
         </div>
       </div>
