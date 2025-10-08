@@ -24,7 +24,7 @@ function App() {
   useEffect(() => {
     const fetchProfessors = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/professors' );
+        const response = await fetch('http://localhost:5000/api/professors');
         const data = await response.json();
         setProfessors(data);
       } catch (error) {
@@ -101,11 +101,14 @@ function App() {
       case 'home':
         return (
           <>
-            <Hero />
+            <Hero
+              onOpportunitiesClick={() => handleNavigation('opportunities')}
+              onProfessorsClick={() => handleNavigation('professors')}
+            />
             <NewsSection onNewsClick={handleNewsClick} />
             <OpportunitiesSection
               onOpportunityClick={handleOpportunityClick}
-              onNavigate={handleNavigation} // ✅ Adicionado
+              onNavigate={handleNavigation}
             />
             <DepartmentsPage
               onProfessorClick={handleProfessorClick}
@@ -113,6 +116,7 @@ function App() {
             />
           </>
         );
+
 
       case 'departments':
         return <DepartmentsPage onProfessorClick={handleProfessorClick} professors={professors} />;

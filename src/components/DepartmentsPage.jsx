@@ -92,16 +92,12 @@ const DepartmentsPage = ({ onProfessorClick }) => {
                   </p>
 
                   {/* Stats */}
-                  <div className="grid grid-cols-3 gap-4 mb-4">
-                    <div className="text-center">
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div className="text-center p-4 bg-green-30 rounded-lg shadow">
                       <div className="text-2xl font-bold text-green-700">{dept.quantidade_professores}</div>
                       <div className="text-xs text-gray-600">Professores</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-700">N/A</div>
-                      <div className="text-xs text-gray-600">Estudantes</div>
-                    </div>
-                    <div className="text-center">
+                    <div className="text-center p-4 bg-green-30 rounded-lg shadow">
                       <div className="text-2xl font-bold text-green-700">{dept.disciplinas.length}</div>
                       <div className="text-xs text-gray-600">Disciplinas</div>
                     </div>
