@@ -38,6 +38,11 @@ const contagensRoutes = require('./routes/contagemRoute');
 app.use('/api/contagens', contagensRoutes);
 
 //---------------------------------------------------------------//
+// Rota para notícias
+const noticiasRoutes = require('./routes/noticiasRoute');
+app.use('/api/noticias', noticiasRoutes);
+
+//---------------------------------------------------------------//
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

@@ -210,7 +210,16 @@ const OpportunityDetail = ({ opportunity, onBack }) => {
             {!applicationSent ? (
               <div className="space-y-4">
                 <p className="text-sm text-gray-600">Para se candidatar a esta vaga, clique no botão abaixo.</p>
-                <Button onClick={handleApply} className="w-full bg-green-700 hover:bg-green-800"><FileText className="h-4 w-4 mr-2" />Candidatar-se à vaga</Button>
+                <Button
+                  onClick={() => window.open(
+                    `https://docs.google.com/forms/d/e/1FAIpQLSdE9PoB459RO9e67ynKm7QqPQxnLUEL5p4ny7hr6PSVre7kfA/viewform?usp=pp_url&entry.320291516=${encodeURIComponent(data.title)}`,
+                    '_blank'
+                  )}
+                  className="w-full bg-green-700 hover:bg-green-800"
+                >
+                  Candidatar-se à vaga
+                </Button>
+
                 <Button variant="outline" className="w-full" onClick={() => window.open(`mailto:${data.email}?subject=Interesse na vaga: ${capitalizeFirstLetter(data.title)}`)}><Mail className="h-4 w-4 mr-2" />Contatar professor</Button>
               </div>
             ) : (

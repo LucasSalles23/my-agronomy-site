@@ -1,111 +1,66 @@
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { ArrowLeft, Calendar, User, GraduationCap, Eye, Share2, Clock } from 'lucide-react'
 
 const NewsDetail = ({ newsId, onBack }) => {
-  // Dados mockados de notícias (mesmo array da NewsPage)
-  const newsData = [
-    {
-      id: 1,
-      title: "Programa de Bolsas de Estágio 2025 está com inscrições abertas",
-      summary: "Iniciativa beneficia 12 estudantes de graduação com apoio financeiro, mentoria profissional e integração entre teoria e prática.",
-      content: `O Programa de Bolsas de Estágio 2025 representa uma oportunidade única para estudantes de agronomia desenvolverem suas habilidades práticas em um ambiente profissional real. A iniciativa, que já está em sua quinta edição, tem como objetivo principal conectar a teoria aprendida em sala de aula com a prática do mercado de trabalho.
+  const [news, setNews] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-Este ano, o programa oferece 12 vagas para estudantes de graduação em Agronomia, proporcionando não apenas apoio financeiro através de bolsas mensais, mas também mentoria profissional especializada. Os estudantes selecionados terão a oportunidade de trabalhar em projetos reais, desenvolvendo competências técnicas e soft skills essenciais para sua futura carreira.
+  // --- BUSCAR NOTÍCIA PELO ID ---
+  useEffect(() => {
+    const fetchNewsDetail = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/noticias/${newsId}`)
+        if (!response.ok) throw new Error('Erro ao buscar notícia do backend')
+        const item = await response.json()
 
-O processo seletivo é rigoroso e busca identificar estudantes com potencial de liderança, interesse genuíno pela área e comprometimento com a excelência acadêmica. Os candidatos passarão por análise de histórico escolar, entrevista individual e apresentação de um projeto de interesse.
+        // Formatando os dados
+        const formatted = {
+          id: item.id,
+          title: item.titulo,
+          summary: item.resumo,
+          content: item.conteudo,
+          category: item.categoria,
+          publishDate: item.data_publicacao,
+          lastUpdate: item.ultima_atualizacao,
+          views: item.visualizacoes || 0,
+          author: {
+            name: item.autor_nome || 'Desconhecido',
+            course: item.autor_curso || 'Agronomia',
+            period: item.autor_periodo || 'N/A',
+            avatar: item.autor_url_avatar || '/api/placeholder/40/40',
+            initials: item.autor_iniciais || 'NA'
+          },
+          reviewer: {
+            name: item.revisor_nome || 'Desconhecido',
+            department: item.revisor_departamento || 'N/A',
+            initials: item.revisor_iniciais || 'NA'
+          },
+          image: item.url_imagem || '/api/placeholder/800/400',
+          tags: item.tags ? item.tags.split(',') : []
+        }
 
-As inscrições estão abertas até o dia 15 de outubro de 2025, e podem ser realizadas através do portal online da universidade. Os resultados serão divulgados no dia 25 de outubro, com início das atividades previsto para novembro.
-
-Para mais informações sobre requisitos, documentação necessária e cronograma detalhado, os interessados podem consultar o edital completo disponível no site oficial ou entrar em contato diretamente com a coordenação do programa.`,
-      category: "Oportunidades",
-      publishDate: "2025-09-25",
-      lastUpdate: "2025-09-25",
-      views: 245,
-      author: {
-        name: "Ana Carolina Silva",
-        course: "Agronomia",
-        period: "4º período",
-        avatar: "/api/placeholder/40/40",
-        initials: "AS"
-      },
-      reviewer: {
-        name: "Prof. Carlos Eduardo Pellegrino Cerri",
-        department: "Ciência do Solo",
-        initials: "CC"
-      },
-      image: "/api/placeholder/800/400",
-      tags: ["bolsa", "estágio", "graduação", "mentoria"]
-    },
-    {
-      id: 2,
-      title: "Pesquisa sobre impacto dos pets na economia brasileira",
-      summary: "Pesquisa desenvolvida no Programa de Pós-graduação em Economia Aplicada analisa impacto dos pets no orçamento familiar.",
-      content: `O mercado pet brasileiro tem apresentado crescimento exponencial nos últimos anos, movimentando bilhões de reais anualmente e se consolidando como um dos setores mais promissores da economia nacional. Uma nova pesquisa desenvolvida no âmbito do Programa de Pós-graduação em Economia Aplicada da universidade busca compreender de forma mais profunda o impacto deste fenômeno no orçamento das famílias brasileiras.
-
-O estudo, que está sendo conduzido ao longo de 18 meses, analisa dados de mais de 2.000 famílias de diferentes regiões do país, investigando como a presença de animais de estimação influencia os padrões de consumo e as decisões financeiras domésticas. Os resultados preliminares já indicam tendências surpreendentes que podem redefinir nossa compreensão sobre este mercado.
-
-Segundo os pesquisadores, o gasto médio mensal das famílias com pets varia significativamente conforme a região, renda familiar e tipo de animal. Cães e gatos lideram os investimentos, seguidos por peixes ornamentais e aves. Os maiores gastos concentram-se em alimentação, cuidados veterinários e produtos de higiene e bem-estar.
-
-A pesquisa também investiga o fenômeno da "humanização" dos pets, onde os animais são tratados como membros da família, recebendo cuidados e produtos antes destinados exclusivamente aos humanos. Este comportamento tem impulsionado o desenvolvimento de novos nichos de mercado e oportunidades de negócio.
-
-Os dados coletados serão fundamentais para empresários, formuladores de políticas públicas e pesquisadores interessados em compreender melhor esta dinâmica econômica emergente.`,
-      category: "Pesquisa",
-      publishDate: "2025-09-20",
-      lastUpdate: "2025-09-22",
-      views: 189,
-      author: {
-        name: "João Pedro Santos",
-        course: "Agronomia",
-        period: "6º período",
-        avatar: "/api/placeholder/40/40",
-        initials: "JS"
-      },
-      reviewer: {
-        name: "Prof. Marina Luciana Abreu de Melo",
-        department: "Genética",
-        initials: "MM"
-      },
-      image: "/api/placeholder/800/400",
-      tags: ["economia", "pets", "pesquisa", "mercado"]
-    },
-    {
-      id: 3,
-      title: "Estudo sobre carbono e biodiversidade na Ilha das Cinzas",
-      summary: "Pesquisadores estudam carbono, biodiversidade e uso da terra em importante área de conservação.",
-      content: `A Ilha das Cinzas representa um ecossistema único que tem sido objeto de estudos intensivos sobre sequestro de carbono e conservação da biodiversidade. Este importante projeto de pesquisa, desenvolvido em parceria com institutos nacionais e internacionais, busca compreender os complexos mecanismos ecológicos que fazem desta região um verdadeiro laboratório natural.
-
-O estudo, que já está em sua segunda fase, utiliza tecnologias de ponta para monitorar os fluxos de carbono no solo e na vegetação, mapeando com precisão como diferentes práticas de uso da terra influenciam a capacidade de sequestro de carbono do ecossistema. Os pesquisadores empregam sensores remotos, análises laboratoriais avançadas e modelagem computacional para obter dados precisos.
-
-Os resultados preliminares indicam que a Ilha das Cinzas possui uma capacidade de sequestro de carbono superior à média de ecossistemas similares, principalmente devido à sua rica diversidade de espécies vegetais e às características únicas do solo local. Esta descoberta tem implicações importantes para estratégias de mitigação das mudanças climáticas.
-
-Além do aspecto climático, o projeto também documenta a extraordinária biodiversidade da região, catalogando espécies de flora e fauna, muitas das quais endêmicas. O trabalho de campo revelou a presença de espécies anteriormente desconhecidas, destacando a importância da conservação desta área.
-
-O projeto conta com financiamento de agências nacionais e internacionais de fomento à pesquisa e representa um exemplo de como a ciência pode contribuir para a compreensão e preservação de ecossistemas únicos.`,
-      category: "Pesquisa",
-      publishDate: "2025-09-18",
-      lastUpdate: "2025-09-18",
-      views: 167,
-      author: {
-        name: "Maria Fernanda Costa",
-        course: "Agronomia",
-        period: "8º período",
-        avatar: "/api/placeholder/40/40",
-        initials: "MC"
-      },
-      reviewer: {
-        name: "Prof. Tiago Osório Ferreira",
-        department: "Fitopatologia e Nematologia",
-        initials: "TF"
-      },
-      image: "/api/placeholder/800/400",
-      tags: ["carbono", "biodiversidade", "conservação", "sustentabilidade"]
+        setNews(formatted)
+        setLoading(false)
+      } catch (err) {
+        console.error('Erro ao buscar notícia do backend:', err)
+        setNews(null)
+        setLoading(false)
+      }
     }
-  ]
 
-  // Encontrar a notícia pelo ID
-  const news = newsData.find(item => item.id === parseInt(newsId))
+    fetchNewsDetail()
+  }, [newsId])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <span>Carregando...</span>
+      </div>
+    )
+  }
 
   if (!news) {
     return (
@@ -168,12 +123,9 @@ O projeto conta com financiamento de agências nacionais e internacionais de fom
 
           {/* Conteúdo do Artigo */}
           <div className="p-6 md:p-8">
-            {/* Título */}
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
               {news.title}
             </h1>
-
-            {/* Resumo */}
             <p className="text-xl text-gray-600 mb-6 leading-relaxed">
               {news.summary}
             </p>
@@ -196,13 +148,11 @@ O projeto conta com financiamento de agências nacionais e internacionais de fom
               </div>
             </div>
 
-            {/* Informações do Autor */}
+            {/* Autor */}
             <div className="flex items-center space-x-4 mb-6 p-4 bg-blue-50 rounded-lg">
               <Avatar className="h-12 w-12">
                 <AvatarImage src={news.author.avatar} />
-                <AvatarFallback className="bg-blue-200 text-blue-700">
-                  {news.author.initials}
-                </AvatarFallback>
+                <AvatarFallback className="bg-blue-200 text-blue-700">{news.author.initials}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
@@ -214,12 +164,10 @@ O projeto conta com financiamento de agências nacionais e internacionais de fom
               </div>
             </div>
 
-            {/* Informações do Revisor */}
+            {/* Revisor */}
             <div className="flex items-center space-x-4 mb-8 p-4 bg-green-50 rounded-lg">
               <Avatar className="h-12 w-12">
-                <AvatarFallback className="bg-green-200 text-green-700">
-                  {news.reviewer.initials}
-                </AvatarFallback>
+                <AvatarFallback className="bg-green-200 text-green-700">{news.reviewer.initials}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
@@ -231,39 +179,28 @@ O projeto conta com financiamento de agências nacionais e internacionais de fom
               </div>
             </div>
 
-            {/* Conteúdo Principal */}
+            {/* Conteúdo */}
             <div className="prose prose-lg max-w-none mb-8">
               {news.content.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="mb-4 text-gray-700 leading-relaxed">
-                  {paragraph}
-                </p>
+                <p key={index} className="mb-4 text-gray-700 leading-relaxed">{paragraph}</p>
               ))}
             </div>
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-8">
               {news.tags.map(tag => (
-                <Badge key={tag} variant="secondary" className="text-sm">
-                  {tag}
-                </Badge>
+                <Badge key={tag} variant="secondary" className="text-sm">{tag}</Badge>
               ))}
             </div>
 
             {/* Ações */}
             <div className="flex items-center justify-between pt-6 border-t">
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex items-center space-x-2"
-              >
+              <Button variant="outline" size="sm" className="flex items-center space-x-2">
                 <Share2 className="h-4 w-4" />
                 <span>Compartilhar</span>
               </Button>
-              
-              <Button
-                onClick={onBack}
-                className="bg-green-600 hover:bg-green-700"
-              >
+
+              <Button onClick={onBack} className="bg-green-600 hover:bg-green-700">
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Voltar às notícias
               </Button>
@@ -276,4 +213,3 @@ O projeto conta com financiamento de agências nacionais e internacionais de fom
 }
 
 export default NewsDetail
-
