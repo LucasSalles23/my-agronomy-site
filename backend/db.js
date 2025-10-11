@@ -1,12 +1,10 @@
 const mysql = require('mysql2');
-require('dotenv').config();
 
-const pool = mysql.createPool(process.env.DATABASE_URL);
+const pool = mysql.createPool(
+  'mysql://root:ssQaDLHjCsOtcippSVgTirtwoZkKwHue@nozomi.proxy.rlwy.net:39689/professores_db'
+).promise();
 
-module.exports = pool.promise();
-
-
-
+module.exports = pool;
 
 
 /*const mysql = require('mysql2');
