@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const opportunityController = require("../controllers/oportunidadesController");
 
-// Rotas CRUD
+// Rotas CRUD  -- http://localhost:5000/api/opportunities
 router.get("/", opportunityController.getAllOpportunities);
 router.get("/:id", opportunityController.getOpportunityById);
 router.post("/", opportunityController.createOpportunity);

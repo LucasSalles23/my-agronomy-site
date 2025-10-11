@@ -12,15 +12,13 @@ import {
   Phone
 } from 'lucide-react';
 
-// O componente recebe 'onProfessorClick' do App.jsx para navegação
-const DepartmentsPage = ({ onProfessorClick }) => {
-  // --- ESTADOS DO COMPONENTE ---
+// O componente recebe 'onProfessorClick' e 'onViewAllDepartments' do App.jsx para navegação
+const DepartmentsPage = ({ onProfessorClick, onViewAllDepartments }) => {
   const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [departments, setDepartments] = useState([]); // Armazenará os dados da API
-  const [loading, setLoading] = useState(true);       // Controla a mensagem "Carregando..."
-  const [error, setError] = useState(null);           // Armazena mensagens de erro
+  const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // --- BUSCA DE DADOS DA API ---
   useEffect(() => {
     const fetchDepartments = async () => {
       setLoading(true);
@@ -30,7 +28,7 @@ const DepartmentsPage = ({ onProfessorClick }) => {
           throw new Error('Falha ao buscar os dados dos departamentos.');
         }
         const data = await response.json();
-        setDepartments(data); // Armazena os dados recebidos da API no estado
+        setDepartments(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -41,7 +39,6 @@ const DepartmentsPage = ({ onProfessorClick }) => {
     fetchDepartments();
   }, []);
 
-  // --- FUNÇÃO AUXILIAR PARA NAVEGAÇÃO ---
   const handleProfessorCardClick = (profId) => {
     if (onProfessorClick) {
       onProfessorClick(profId);
@@ -50,7 +47,6 @@ const DepartmentsPage = ({ onProfessorClick }) => {
     }
   };
 
-  // --- RENDERIZAÇÃO CONDICIONAL PARA LOADING E ERRO ---
   if (loading) {
     return <section className="py-16 text-center">Carregando departamentos...</section>;
   }
@@ -59,7 +55,6 @@ const DepartmentsPage = ({ onProfessorClick }) => {
     return <section className="py-16 text-center text-red-500">Erro ao carregar: {error}</section>;
   }
 
-  // --- JSX COMPLETO E DINÂMICO ---
   return (
     <section className="py-16 bg-gray-50" id="departamentos">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -73,63 +68,78 @@ const DepartmentsPage = ({ onProfessorClick }) => {
         </div>
 
         {!selectedDepartment ? (
-          /* Departments Grid */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {departments.map((dept) => (
-              <div key={dept.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Building className="h-6 w-6 text-green-700" />
+          <>
+            {/* Departments Grid - Mostrando apenas 3 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {departments.slice(0, 3).map((dept) => (
+                <div key={dept.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                  <div className="p-6">
+                    <div className="flex items-center mb-4">
+                      <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                        <Building className="h-6 w-6 text-green-700" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900 ml-3">
+                        {dept.nome}
+                      </h3>
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900 ml-3">
-                      {dept.nome}
-                    </h3>
+
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {dept.descricao}
+                    </p>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="text-center p-4 bg-green-30 rounded-lg shadow">
+                        <div className="text-2xl font-bold text-green-700">{dept.quantidade_professores}</div>
+                        <div className="text-xs text-gray-600">Professores</div>
+                      </div>
+                      <div className="text-center p-4 bg-green-30 rounded-lg shadow">
+                        <div className="text-2xl font-bold text-green-700">{dept.disciplinas.length}</div>
+                        <div className="text-xs text-gray-600">Disciplinas</div>
+                      </div>
+                    </div>
+
+                    {/* Disciplines Preview */}
+                    <div className="mb-4">
+                      <div className="flex flex-wrap gap-1">
+                        {dept.disciplinas.slice(0, 3).map((discipline) => (
+                          <Badge key={discipline.id} variant="secondary" className="text-xs">
+                            {discipline.nome}
+                          </Badge>
+                        ))}
+                        {dept.disciplinas.length > 3 && (
+                          <Badge variant="outline" className="text-xs">
+                            +{dept.disciplinas.length - 3} mais
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={() => setSelectedDepartment(dept)}
+                      className="w-full bg-green-700 hover:bg-green-800"
+                    >
+                      Ver detalhes
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
                   </div>
-
-                  <p className="text-gray-600 mb-4 line-clamp-3">
-                    {dept.descricao}
-                  </p>
-
-                  {/* Stats */}
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="text-center p-4 bg-green-30 rounded-lg shadow">
-                      <div className="text-2xl font-bold text-green-700">{dept.quantidade_professores}</div>
-                      <div className="text-xs text-gray-600">Professores</div>
-                    </div>
-                    <div className="text-center p-4 bg-green-30 rounded-lg shadow">
-                      <div className="text-2xl font-bold text-green-700">{dept.disciplinas.length}</div>
-                      <div className="text-xs text-gray-600">Disciplinas</div>
-                    </div>
-                  </div>
-
-                  {/* Disciplines Preview */}
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-1">
-                      {dept.disciplinas.slice(0, 3).map((discipline) => (
-                        <Badge key={discipline.id} variant="secondary" className="text-xs">
-                          {discipline.nome}
-                        </Badge>
-                      ))}
-                      {dept.disciplinas.length > 3 && (
-                        <Badge variant="outline" className="text-xs">
-                          +{dept.disciplinas.length - 3} mais
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
-
-                  <Button
-                    onClick={() => setSelectedDepartment(dept)}
-                    className="w-full bg-green-700 hover:bg-green-800"
-                  >
-                    Ver detalhes
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
                 </div>
+              ))}
+            </div>
+            {/* Botão "Ver todos os departamentos" */}
+            {departments.length > 2 && !selectedDepartment && (
+              <div className="text-center mt-8">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-green-700 text-green-700 hover:bg-green-700 hover:text-white cursor-pointer transition-colors"
+                  onClick={onViewAllDepartments}
+                >
+                  Ver todos os departamentos
+                </Button>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         ) : (
           /* Department Detail */
           <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

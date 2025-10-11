@@ -63,7 +63,7 @@ const Hero = ({ onOpportunitiesClick, onProfessorsClick }) => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button
               size="lg"
-              className="bg-green-700 hover:bg-green-800"
+              className="bg-green-700 hover:bg-green-800 cursor-pointer"
               onClick={onOpportunitiesClick} // ✅ Handler do App.jsx
             >
               Ver Oportunidades
@@ -72,7 +72,7 @@ const Hero = ({ onOpportunitiesClick, onProfessorsClick }) => {
             <Button
               size="lg"
               variant="outline"
-              className="border-green-700 text-green-700 hover:bg-green-50"
+              className="border-green-700 text-green-700 hover:bg-green-50 cursor-pointer"
               onClick={onProfessorsClick} // ✅ Handler do App.jsx
             >
               Conhecer Professores

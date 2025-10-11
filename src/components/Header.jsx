@@ -25,22 +25,22 @@ const Header = ({ onNavigate }) => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <button onClick={() => onNavigate && onNavigate('home')} className="text-gray-700 hover:text-green-700 transition-colors">
+            <button onClick={() => onNavigate && onNavigate('home')} className="text-gray-700 hover:text-green-700 transition-colors cursor-pointer">
               Home
             </button>
-            <button onClick={() => onNavigate && onNavigate('news')} className="text-gray-700 hover:text-green-700 transition-colors">
+            <button onClick={() => onNavigate && onNavigate('news')} className="text-gray-700 hover:text-green-700 transition-colors cursor-pointer">
               Notícias
             </button>
-            <button onClick={() => onNavigate && onNavigate('opportunities')} className="text-gray-700 hover:text-green-700 transition-colors">
+            <button onClick={() => onNavigate && onNavigate('opportunities')} className="text-gray-700 hover:text-green-700 transition-colors cursor-pointer">
               Oportunidades
             </button>
-            <button onClick={() => onNavigate && onNavigate('departments')} className="text-gray-700 hover:text-green-700 transition-colors">
+            <button onClick={() => onNavigate && onNavigate('departments')} className="text-gray-700 hover:text-green-700 transition-colors cursor-pointer">
               Departamentos
             </button>
-            <button onClick={() => onNavigate && onNavigate('professors')} className="text-gray-700 hover:text-green-700 transition-colors">
+            <button onClick={() => onNavigate && onNavigate('professors')} className="text-gray-700 hover:text-green-700 transition-colors cursor-pointer">
               Professores
             </button>
-            <button onClick={() => onNavigate && onNavigate('home')} className="text-gray-700 hover:text-green-700 transition-colors">
+            <button onClick={() => onNavigate && onNavigate('home')} className="text-gray-700 hover:text-green-700 transition-colors cursor-pointer">
               Contato
             </button>
           </nav>

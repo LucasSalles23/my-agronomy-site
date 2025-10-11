@@ -325,7 +325,9 @@ function App() {
             <DepartmentsPage
               onProfessorClick={handleProfessorClick}
               professors={professors}
+              onViewAllDepartments={() => handleNavigation('departments')} // ✅ botão "Ver todos os departamentos"
             />
+
           </>
 
         );

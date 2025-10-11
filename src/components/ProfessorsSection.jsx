@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -8,25 +8,31 @@ const ProfessorsSection = ({ onProfessorClick }) => {
   const [professors, setProfessors] = useState([])
   const [search, setSearch] = useState('')
   const [departmentFilter, setDepartmentFilter] = useState('')
+  const [visibleCount, setVisibleCount] = useState(10)
 
   // Buscar professores do backend
   useEffect(() => {
-    axios.get('http://localhost:5000/api/professors') // altere se seu endpoint for diferente
+    axios.get('http://localhost:5000/api/professors')
       .then((res) => setProfessors(res.data))
       .catch((err) => console.error(err))
   }, [])
 
-  // Filtrar professores por busca e departamento
+  // Filtrar professores
   const filteredProfessors = professors.filter(p => {
-    const matchesNameOrSpec = p.nome.toLowerCase().includes(search.toLowerCase()) ||
-                              p.especializacao.toLowerCase().includes(search.toLowerCase())
+    const matchesNameOrSpec =
+      p.nome.toLowerCase().includes(search.toLowerCase()) ||
+      p.especializacao.toLowerCase().includes(search.toLowerCase())
     const matchesDepartment = departmentFilter ? p.departamento === departmentFilter : true
     return matchesNameOrSpec && matchesDepartment
   })
 
+  // Professores visíveis
+  const visibleProfessors = filteredProfessors.slice(0, visibleCount)
+
   return (
     <section className="py-16 bg-white" id="professores">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Título */}
         <div className="text-center mb-12">
           <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
             Nossos Professores
@@ -36,7 +42,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
           </p>
         </div>
 
-        {/* Search Bar */}
+        {/* Busca e Filtro */}
         <div className="bg-gray-50 rounded-lg p-6 mb-8">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1 relative">
@@ -60,79 +66,103 @@ const ProfessorsSection = ({ onProfessorClick }) => {
                 <option value="Genética">Genética</option>
                 <option value="Fitopatologia e Nematologia">Fitopatologia</option>
               </select>
-              <Button className="bg-green-700 hover:bg-green-800">
-                Buscar
-              </Button>
             </div>
           </div>
         </div>
 
-        {/* Professors Grid */}
+        {/* Grid de Professores + Anúncios */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProfessors.map((professor) => (
-            <div key={professor.id} className="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-              <div className="p-6">
-                {/* Professor Avatar */}
-                <div className="flex items-center mb-4">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                    <User className="h-8 w-8 text-green-700" />
+          {visibleProfessors.map((professor, index) => (
+            <React.Fragment key={professor.id}>
+              {/* Card do Professor */}
+              <div className="bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="p-6">
+                  {/* Avatar */}
+                  <div className="flex items-center mb-4">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                      <User className="h-8 w-8 text-green-700" />
+                    </div>
+                    <div className="ml-4">
+                      <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+                        {professor.nome}
+                      </h3>
+                      <p className="text-sm text-gray-600">{professor.cargo}</p>
+                    </div>
                   </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
-                      {professor.nome}
-                    </h3>
-                    <p className="text-sm text-gray-600">{professor.cargo}</p>
+
+                  {/* Departamento */}
+                  <div className="flex items-center mb-3 text-gray-600">
+                    <Building className="h-4 w-4 mr-2" />
+                    <span className="text-sm">{professor.departamento}</span>
                   </div>
-                </div>
 
-                {/* Department */}
-                <div className="flex items-center mb-3 text-gray-600">
-                  <Building className="h-4 w-4 mr-2" />
-                  <span className="text-sm">{professor.departamento}</span>
-                </div>
+                  {/* Especializações */}
+                  <div className="mb-4">
+                    <p className="text-sm font-medium text-gray-700 mb-2">Especializações:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {professor.especializacao.split(',').map((spec, i) => (
+                        <Badge key={i} variant="secondary" className="text-xs">
+                          {spec.trim()}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
 
-                {/* Specializations */}
-                <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Especializações:</p>
-                  <div className="flex flex-wrap gap-1">
-                    {professor.especializacao.split(',').map((spec, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
-                        {spec.trim()}
+                  {/* Estatísticas */}
+                  <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
+                    <span>{professor.estudantesOrientados} estudantes orientados</span>
+                    {professor.oportunidades > 0 && (
+                      <Badge className="bg-green-100 text-green-800">
+                        Vagas disponíveis
                       </Badge>
-                    ))}
+                    )}
                   </div>
-                </div>
 
-                {/* Stats */}
-                <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
-                  <span>{professor.estudantesOrientados} estudantes orientados</span>
-                  {professor.oportunidades && (
-                    <Badge className="bg-green-100 text-green-800">
-                      Vagas disponíveis
-                    </Badge>
-                  )}
-                </div>
-
-                {/* Actions */}
-                <div className="flex flex-col gap-2">
-                  <Button className="w-full bg-green-700 hover:bg-green-800">
-                    <Mail className="h-4 w-4 mr-2" />
-                    Entrar em contato
-                  </Button>
-                  <Button variant="outline" className="w-full" onClick={() => onProfessorClick && onProfessorClick(professor.id)}>
-                    Ver perfil completo
-                  </Button>
+                  {/* Ações */}
+                  <div className="flex flex-col gap-2">
+                    <Button className="w-full bg-green-700 hover:bg-green-800">
+                      <Mail className="h-4 w-4 mr-2" />
+                      Entrar em contato
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => onProfessorClick && onProfessorClick(professor.id)}
+                    >
+                      Ver perfil completo
+                    </Button>
+                  </div>
                 </div>
               </div>
-            </div>
+
+              {/* Inserir anúncio a cada 2 professores (para testar) */}
+              {(index + 1) % 2 === 0 && (
+                <div
+                  key={`ad-${index}`}
+                  className="border border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-600 bg-gray-50 hover:bg-gray-100 transition"
+                >
+                  <p className="text-sm font-semibold">🎯 Anúncio patrocinado</p>
+                  <p className="text-xs text-gray-500 mt-2">Seu banner pode estar aqui</p>
+                </div>
+              )}
+            </React.Fragment>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <Button variant="outline" size="lg" className="border-green-700 text-green-700 hover:bg-green-50">
-            Ver todos os professores
-          </Button>
-        </div>
+
+        {/* Botão Ver mais */}
+        {visibleCount < filteredProfessors.length && (
+          <div className="text-center mt-12">
+            <Button
+              variant="outline"
+              size="lg"
+              className="border-green-700 text-green-700 hover:bg-green-700 hover:text-white cursor-pointer"
+              onClick={() => setVisibleCount(prev => prev + 5)}
+            >
+              Ver mais professores
+            </Button>
+          </div>
+        )}
       </div>
     </section>
   )
