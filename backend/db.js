@@ -1,8 +1,6 @@
 const mysql = require('mysql2');
 
-const pool = mysql.createPool(
-  'mysql://root:ssQaDLHjCsOtcippSVgTirtwoZkKwHue@nozomi.proxy.rlwy.net:39689/professores_db'
-).promise();
+const pool = mysql.createPool(process.env.DATABASE_URL).promise();
 
 module.exports = pool;
 
