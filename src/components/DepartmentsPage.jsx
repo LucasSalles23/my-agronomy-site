@@ -23,7 +23,7 @@ const DepartmentsPage = ({ onProfessorClick, onViewAllDepartments }) => {
     const fetchDepartments = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/departamentos`);
+        const response = await fetch('http://localhost:5000/api/departamentos');
         if (!response.ok) {
           throw new Error('Falha ao buscar os dados dos departamentos.');
         }
@@ -35,7 +35,6 @@ const DepartmentsPage = ({ onProfessorClick, onViewAllDepartments }) => {
         setLoading(false);
       }
     };
-
 
     fetchDepartments();
   }, []);

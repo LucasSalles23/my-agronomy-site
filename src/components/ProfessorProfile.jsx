@@ -26,7 +26,7 @@ const ProfessorProfile = ({ professor, onBack, onOpportunityClick }) => {
     const fetchDetailedData = async () => {
       setLoading(true);
       setError(null);
-
+      
       const professorId = professor.id || professor.professor_id;
 
       // =================================================================================
@@ -34,16 +34,12 @@ const ProfessorProfile = ({ professor, onBack, onOpportunityClick }) => {
       // =================================================================================
       console.log('[LOG 2] ID extraído para a URL:', professorId);
 
-      const apiUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/professor_profile/${professorId}`;
-      axios.get(apiUrl)
-        .then(res => setProfessorProfile(res.data))
-        .catch(err => console.error(err));
-
+      const apiUrl = `http://localhost:5000/api/professor_profile/${professorId}`;
 
       // =================================================================================
       // [LOG 3] Qual URL final estamos tentando acessar?
       // =================================================================================
-      console.log('[LOG 3] Tentando fazer fetch da URL:', apiUrl);
+      console.log('[LOG 3] Tentando fazer fetch da URL:', apiUrl );
 
       try {
         const response = await fetch(apiUrl);
@@ -88,7 +84,7 @@ const ProfessorProfile = ({ professor, onBack, onOpportunityClick }) => {
       </div>
     );
   }
-
+  
   // Adicionando uma verificação para o caso de o fetch ter sucesso, mas não retornar dados
   if (!detailedData) {
     return (

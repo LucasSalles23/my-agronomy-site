@@ -1,12 +1,5 @@
 const mysql = require('mysql2');
 
-const pool = mysql.createPool(process.env.DATABASE_URL).promise();
-
-module.exports = pool;
-
-
-/*const mysql = require('mysql2');
-
 const pool = mysql.createPool({
  host: 'localhost',      // seu XAMPP, geralmente localhost
  user: 'root',           // usuário do MySQL
@@ -19,4 +12,3 @@ const pool = mysql.createPool({
 
 module.exports = pool.promise();
 
-*/

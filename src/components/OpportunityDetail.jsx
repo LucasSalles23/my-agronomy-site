@@ -44,9 +44,7 @@ const OpportunityDetail = ({ opportunity, onBack }) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/oportunidades_detalhes/${opportunity.id}`
-        );
+        const response = await axios.get(`http://localhost:5000/api/oportunidades_detalhes/${opportunity.id}`);
         setDetailedData(response.data);
       } catch (err) {
         console.error("Erro ao buscar detalhes da oportunidade:", err);
@@ -55,7 +53,6 @@ const OpportunityDetail = ({ opportunity, onBack }) => {
         setLoading(false);
       }
     };
-
 
     fetchDetailedData();
   }, [opportunity]);
