@@ -1,19 +1,9 @@
 const mysql = require('mysql2');
-require('dotenv').config(); // garante que as variáveis do .env sejam carregadas
+require('dotenv').config();
 
-const pool = mysql.createPool({
-  host: process.env.MYSQLHOST,       // host do Railway
-  user: process.env.MYSQLUSER,       // usuário do Railway
-  password: process.env.MYSQLPASSWORD, // senha do Railway
-  database: process.env.MYSQLDATABASE, // nome do banco
-  port: process.env.MYSQLPORT,       // porta do banco (geralmente 3306)
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+const pool = mysql.createPool(process.env.DATABASE_URL);
 
 module.exports = pool.promise();
-
 
 
 
