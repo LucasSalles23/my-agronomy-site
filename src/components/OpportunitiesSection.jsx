@@ -39,7 +39,7 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/departamentos');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/departamentos`);
         if (!response.ok) throw new Error(`Erro: ${response.status}`);
         const data = await response.json();
         setDepartments(data);
@@ -47,6 +47,7 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
         console.error("Erro ao buscar departamentos:", e);
       }
     };
+
 
     fetchDepartments();
   }, []);

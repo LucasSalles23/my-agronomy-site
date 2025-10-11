@@ -12,9 +12,10 @@ const ProfessorsSection = ({ onProfessorClick }) => {
 
   // Buscar professores do backend
   useEffect(() => {
-    axios.get('http://localhost:5000/api/professors')
-      .then((res) => setProfessors(res.data))
-      .catch((err) => console.error(err))
+    axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/professors`)
+      .then(res => setProfessors(res.data))
+      .catch(err => console.error(err));
+
   }, [])
 
   // Filtrar professores
