@@ -80,5 +80,5 @@ app.use('/api/noticias', noticiasRoutes);
 
 // ---------------------- SERVIDOR ---------------------- //
 
-const PORT = process.env.PORT || 5000; // Para compatibilidade com Railway/Outros
+const PORT = process.env.PORT; // Para compatibilidade com Railway/Outros
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
