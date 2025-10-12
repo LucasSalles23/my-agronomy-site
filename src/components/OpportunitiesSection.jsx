@@ -40,7 +40,7 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await fetch('http://my-agronomy-site-production.up.railway.app/api/departamentos');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/departamentos`);
         if (!response.ok) throw new Error(`Erro: ${response.status}`);
         const data = await response.json();
         setDepartments(data);
