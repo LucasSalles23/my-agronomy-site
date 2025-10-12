@@ -17,7 +17,7 @@ const getAllProfessors = async (req, res) => {
 module.exports = {
   getAllProfessors,
 };
- */
+*/
 
 
 

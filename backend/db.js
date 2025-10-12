@@ -14,10 +14,9 @@ module.exports = pool.promise();
 
 */
 
-
-import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
-dotenv.config();
+// db.js
+const mysql = require('mysql2/promise'); // usa require ao invés de import
+require('dotenv').config();              // importa dotenv com require
 
 const db = mysql.createPool({
   host: process.env.MYSQL_HOST,
@@ -27,4 +26,4 @@ const db = mysql.createPool({
   port: process.env.MYSQL_PORT
 });
 
-export default db;
+module.exports = db;                     // exporta com module.exports
