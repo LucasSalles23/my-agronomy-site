@@ -14,7 +14,7 @@ const Hero = ({ onOpportunitiesClick, onProfessorsClick }) => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/contagens');
+        const res = await fetch('http://my-agronomy-site-production.up.railway.app/api/contagens');
         if (!res.ok) throw new Error('Erro ao buscar contagens');
         const data = await res.json();
         setStats(data);

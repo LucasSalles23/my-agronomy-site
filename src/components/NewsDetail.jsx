@@ -12,7 +12,7 @@ const NewsDetail = ({ newsId, onBack }) => {
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/noticias/${newsId}`)
+        const response = await fetch(`http://my-agronomy-site-production.up.railway.app/api/noticias/${newsId}`)
         if (!response.ok) throw new Error('Erro ao buscar notícia do backend')
         const item = await response.json()
 

@@ -12,7 +12,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
 
   // Buscar professores do backend
   useEffect(() => {
-    axios.get('http://localhost:5000/api/professors')
+    axios.get('https://my-agronomy-site-production.up.railway.app/api/professors')
       .then((res) => setProfessors(res.data))
       .catch((err) => console.error(err))
   }, [])

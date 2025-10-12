@@ -10,7 +10,7 @@ const NewsSection = ({ onNewsClick, onViewAllNews }) => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/noticias')
+        const response = await fetch('http://my-agronomy-site-production.up.railway.app/api/noticias')
         if (!response.ok) throw new Error(`Erro ao buscar notícias: ${response.status}`)
         const data = await response.json()
         setNews(data)

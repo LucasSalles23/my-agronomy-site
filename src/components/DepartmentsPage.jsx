@@ -23,7 +23,7 @@ const DepartmentsPage = ({ onProfessorClick, onViewAllDepartments }) => {
     const fetchDepartments = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/departamentos');
+        const response = await fetch('http://my-agronomy-site-production.up.railway.app/api/departamentos');
         if (!response.ok) {
           throw new Error('Falha ao buscar os dados dos departamentos.');
         }
