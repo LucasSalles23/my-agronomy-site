@@ -118,7 +118,7 @@ const getProfessorProfile = async (req, res) => {
   const { id } = req.params;
   try {
     const [professorRows] = await db.query(
-      'SELECT * FROM view_professor_complete WHERE professor_id = ?',
+      'SELECT * FROM railway.view_professor_complete WHERE professor_id = ?',
       [id]
     );
 
