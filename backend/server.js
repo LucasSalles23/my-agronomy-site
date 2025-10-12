@@ -47,8 +47,9 @@ const app = express();
 
 // Permitir requisições apenas do frontend no Vercel
 app.use(cors({
-  origin: 'https://my-agronomy-site.vercel.app'
+  origin: '*' // permite qualquer origem
 }));
+
 
 // Permitir receber JSON no corpo das requisições
 app.use(express.json());
