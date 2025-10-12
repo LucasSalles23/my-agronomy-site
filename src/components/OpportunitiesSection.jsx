@@ -40,7 +40,7 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/departamentos`);
+        const response = await fetch(`https://my-agronomy-site-production.up.railway.app/api/departamentos`);
         if (!response.ok) throw new Error(`Erro: ${response.status}`);
         const data = await response.json();
         setDepartments(data);
@@ -51,6 +51,7 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
 
     fetchDepartments();
   }, []);
+
 
   // --- Função para cores do Badge ---
   const getTypeColor = (type) => {

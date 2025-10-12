@@ -44,7 +44,7 @@ const OpportunityDetail = ({ opportunity, onBack }) => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/oportunidades_detalhes/${opportunity.id}`);
+        const response = await axios.get(`https://my-agronomy-site-production.up.railway.app/api/oportunidades_detalhes/${opportunity.id}`);
         setDetailedData(response.data);
       } catch (err) {
         console.error("Erro ao buscar detalhes da oportunidade:", err);
@@ -56,6 +56,7 @@ const OpportunityDetail = ({ opportunity, onBack }) => {
 
     fetchDetailedData();
   }, [opportunity]);
+
 
   // Sua lógica de renderização de status, intacta.
   if (loading) {
