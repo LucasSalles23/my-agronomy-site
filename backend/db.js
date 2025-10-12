@@ -14,7 +14,7 @@ module.exports = pool.promise();
 
 */
 
-const mysql = require('mysql2/promise');
+/* const mysql = require('mysql2/promise');
 
 const db = mysql.createPool({
   host: 'turntable.proxy.rlwy.net',      // host do Railway
@@ -26,23 +26,21 @@ const db = mysql.createPool({
 
 module.exports = db;
 
+ */
 
 
 
 
-
-/* 
 // backend/db.js
 const mysql = require('mysql2/promise');
-require('dotenv').config({ path: './.env' }); // garante que ele pegue o .env na raiz do backend
+require('dotenv').config({ path: './.env' }); // garante que pegue o .env no backend
 
 const db = mysql.createPool({
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  port: Number(process.env.MYSQL_PORT) || 3306, // converte para número
+  port: Number(process.env.MYSQL_PORT) || 3306, // converte string para número
 });
 
 module.exports = db;
- */
