@@ -12,10 +12,14 @@ const ProfessorsSection = ({ onProfessorClick }) => {
 
   // Buscar professores do backend
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL}/professors`)
-      .then((res) => setProfessors(res.data))
-      .catch((err) => console.error("Erro ao buscar professores:", err));
+    axios.get('https://my-agronomy-site-production.up.railway.app/api/professors')
+      .then((res) => {
+        console.log("[ProfessorsSection] Professores recebidos:", res.data)
+        setProfessors(res.data)
+      })
+      .catch((err) => console.error("Erro ao buscar professores:", err))
   }, []);
+
 
 
   // Filtrar professores
