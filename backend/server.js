@@ -77,6 +77,12 @@ app.use('/api/contagens', contagensRoutes);
 const noticiasRoutes = require('./routes/noticiasRoute');
 app.use('/api/noticias', noticiasRoutes);
 
+
+// rota padrao 
+app.get('/', (req, res) => {
+  res.send('API rodando! Use as rotas /api/... para acessar os dados.');
+});
+
 // ---------------------- SERVIDOR ---------------------- //
 const PORT = process.env.PORT || 5000; // fallback local
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

@@ -14,16 +14,15 @@ module.exports = pool.promise();
 
 */
 
-// db.js
-const mysql = require('mysql2/promise'); // usa require ao invés de import
-require('dotenv').config();              // importa dotenv com require
+const mysql = require('mysql2/promise');
 
 const db = mysql.createPool({
-  host: process.env.MYSQL_HOST,
-  user: process.env.MYSQL_USER,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
-  port: process.env.MYSQL_PORT
+  host: 'turntable.proxy.rlwy.net',      // host do Railway
+  user: 'root',                           // usuário do banco
+  password: 'cKhJDiMEwWxTihLLbFaqyAdnrdHEXqRG', // senha
+  database: 'railway',                    // nome do banco
+  port: 52504                              // porta do banco
 });
 
-module.exports = db;                     // exporta com module.exports
+module.exports = db;
+
