@@ -28,16 +28,21 @@ module.exports = db;
 
 */
 
-// Arquivo: db.js
-const mysql = require('mysql2/promise'); // Usando require para Node comum
-require('dotenv').config();              // Carrega variáveis do .env
+
+
+
+
+// backend/db.js
+const mysql = require('mysql2/promise');
+require('dotenv').config({ path: './.env' }); // garante que ele pegue o .env na raiz do backend
 
 const db = mysql.createPool({
-  host: process.env.MYSQL_HOST,       // Host do banco
-  user: process.env.MYSQL_USER,       // Usuário do banco
-  password: process.env.MYSQL_PASSWORD, // Senha do banco
-  database: process.env.MYSQL_DATABASE, // Nome do banco
-  port: process.env.MYSQL_PORT        // Porta do MySQL (geralmente 3306)
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USER,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
+  port: Number(process.env.MYSQL_PORT) || 3306, // converte para número
 });
 
-module.exports = db; // Exporta para usar nos controllers
+module.exports = db;
+
