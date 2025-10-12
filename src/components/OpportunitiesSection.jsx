@@ -20,7 +20,7 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
   useEffect(() => {
     const fetchOpportunities = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/opportunities');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/opportunities`);
         if (!response.ok) throw new Error(`Erro: ${response.status}`);
         const data = await response.json();
         setOpportunities(data);
@@ -34,6 +34,7 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
 
     fetchOpportunities();
   }, []);
+
 
   // --- Buscar departamentos ---
   useEffect(() => {

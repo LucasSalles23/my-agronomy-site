@@ -57,7 +57,7 @@ app.use(express.json());
 // ---------------------- ROTAS ---------------------- //
 
 // Professores
-const professorRoutes = require('./routes/professorRoute'); 
+const professorRoutes = require('./routes/professorRoute');
 app.use('/api/professors', professorRoutes);
 
 // Perfil detalhado de professor
@@ -65,7 +65,7 @@ const professoresProfileRoutes = require('./routes/professoresProfileRoutes');
 app.use('/api/professor_profile', professoresProfileRoutes);
 
 // Oportunidades
-const opportunityRoutes = require('./routes/oportunidadeRoute'); 
+const opportunityRoutes = require('./routes/oportunidadeRoute');
 app.use('/api/opportunities', opportunityRoutes);
 
 // Detalhes das oportunidades

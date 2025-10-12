@@ -34,7 +34,7 @@ const ProfessorProfile = ({ professor, onBack, onOpportunityClick }) => {
       // =================================================================================
       console.log('[LOG 2] ID extraído para a URL:', professorId);
 
-      const apiUrl = `https://my-agronomy-site-production.up.railway.app/api/professor_profile/${professorId}`;
+      const apiUrl = `${process.env.REACT_APP_API_URL}/professor_profile/${professorId}`;
 
       // =================================================================================
       // [LOG 3] Qual URL final estamos tentando acessar?
