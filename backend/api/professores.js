@@ -1,4 +1,4 @@
-import { query } from '../backend/lib/db'; // Note o caminho para o arquivo db.js
+import { query } from './lib/db'; // Note o caminho para o arquivo db.js
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
