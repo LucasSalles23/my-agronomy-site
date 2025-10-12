@@ -1,14 +1,20 @@
-const express = require('express');
-const router = express.Router();
-const oportunidadesDetalhesController = require('../controllers/oportunidadesDetalhesController');
+// backend/routes/oportunidadesDetalhesRoutes.js
+import express from 'express';
+import {
+  getAllOportunidadesDetalhes,
+  getOportunidadeDetalhesById,
+  createOportunidadeDetalhes,
+  updateOportunidadeDetalhes,
+  deleteOportunidadeDetalhes
+} from '../controllers/oportunidadesDetalhesController.js';
 
-//http://localhost:5000/api/oportunidades_detalhes
+const router = express.Router();
 
 // Rotas CRUD para detalhes da oportunidade
-router.get('/', oportunidadesDetalhesController.getAllOportunidadesDetalhes);          // Listar todos
-router.get('/:id', oportunidadesDetalhesController.getOportunidadeDetalhesById);       // Pegar por ID
-router.post('/', oportunidadesDetalhesController.createOportunidadeDetalhes);          // Criar
-router.put('/:id', oportunidadesDetalhesController.updateOportunidadeDetalhes);        // Atualizar
-router.delete('/:id', oportunidadesDetalhesController.deleteOportunidadeDetalhes);     // Deletar
+router.get('/', getAllOportunidadesDetalhes);          // Listar todos
+router.get('/:id', getOportunidadeDetalhesById);       // Pegar por ID
+router.post('/', createOportunidadeDetalhes);          // Criar
+router.put('/:id', updateOportunidadeDetalhes);        // Atualizar
+router.delete('/:id', deleteOportunidadeDetalhes);     // Deletar
 
-module.exports = router;
+export default router;

@@ -1,9 +1,8 @@
 // ARQUIVO: backend/controllers/oportunidadesDetalhesController.js
-
-const db = require('../db');
+import db from '../db.js';
 
 // --- LISTAR TODOS (CORRIGIDO) ---
-const getAllOportunidadesDetalhes = async (req, res) => {
+export const getAllOportunidadesDetalhes = async (req, res) => {
   try {
     const [rows] = await db.query(`
       SELECT 
@@ -12,11 +11,9 @@ const getAllOportunidadesDetalhes = async (req, res) => {
         o.descricao, 
         o.tipo,
         p.nome AS professor_nome,
-        -- Busca o nome da tabela 'departamentos'
         dep.nome AS professor_departamento
       FROM oportunidades o
       JOIN professores p ON o.professor_id = p.id
-      -- CORREÇÃO: Garantindo que o nome da tabela é 'departamentos' (plural)
       JOIN departamentos dep ON p.departamento_id = dep.id
       ORDER BY o.data_publicacao DESC
     `);
@@ -28,7 +25,7 @@ const getAllOportunidadesDetalhes = async (req, res) => {
 };
 
 // --- PEGAR POR ID (CORRIGIDO) ---
-const getOportunidadeDetalhesById = async (req, res) => {
+export const getOportunidadeDetalhesById = async (req, res) => {
   const { id } = req.params;
   try {
     const [rows] = await db.query(`
@@ -37,16 +34,13 @@ const getOportunidadeDetalhesById = async (req, res) => {
         d.carga_horaria, d.duracao, d.bolsa, d.requisitos, d.atividades,
         p.nome AS professor_nome,
         p.email AS professor_email,
-        -- Busca o nome da tabela 'departamentos'
         dep.nome AS professor_departamento
       FROM oportunidades o
       JOIN oportunidades_detalhes d ON o.id = d.oportunidade_id
       JOIN professores p ON o.professor_id = p.id
-      -- CORREÇÃO: Garantindo que o nome da tabela é 'departamentos' (plural)
       JOIN departamentos dep ON p.departamento_id = dep.id
-      WHERE o.id = ?`,
-      [id]
-    );
+      WHERE o.id = ?
+    `, [id]);
 
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Detalhes da oportunidade não encontrados' });
@@ -72,21 +66,13 @@ const getOportunidadeDetalhesById = async (req, res) => {
   }
 };
 
-// Exporta as funções corrigidas
-module.exports = {
-  getAllOportunidadesDetalhes,
-  getOportunidadeDetalhesById,
-  // ... suas outras funções
-};
-
-
-
-// --- CRIAR, ATUALIZAR, DELETAR (Mantidos como estavam) ---
-const createOportunidadeDetalhes = async (req, res) => {
+// --- CRIAR, ATUALIZAR, DELETAR ---
+export const createOportunidadeDetalhes = async (req, res) => {
   const { oportunidade_id, professor_id, carga_horaria, duracao, bolsa, requisitos, atividades } = req.body;
   try {
     const [result] = await db.query(`
-      INSERT INTO oportunidades_detalhes (oportunidade_id, professor_id, carga_horaria, duracao, bolsa, requisitos, atividades)
+      INSERT INTO oportunidades_detalhes 
+      (oportunidade_id, professor_id, carga_horaria, duracao, bolsa, requisitos, atividades)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `, [oportunidade_id, professor_id, carga_horaria, duracao, bolsa, requisitos, atividades]);
     res.status(201).json({ message: 'Detalhes da oportunidade criados', id: result.insertId });
@@ -96,12 +82,14 @@ const createOportunidadeDetalhes = async (req, res) => {
   }
 };
 
-const updateOportunidadeDetalhes = async (req, res) => {
+export const updateOportunidadeDetalhes = async (req, res) => {
   const { id } = req.params;
   const { oportunidade_id, professor_id, carga_horaria, duracao, bolsa, requisitos, atividades } = req.body;
   try {
     const [result] = await db.query(`
-      UPDATE oportunidades_detalhes SET oportunidade_id = ?, professor_id = ?, carga_horaria = ?, duracao = ?, bolsa = ?, requisitos = ?, atividades = ? WHERE id = ?
+      UPDATE oportunidades_detalhes 
+      SET oportunidade_id = ?, professor_id = ?, carga_horaria = ?, duracao = ?, bolsa = ?, requisitos = ?, atividades = ? 
+      WHERE id = ?
     `, [oportunidade_id, professor_id, carga_horaria, duracao, bolsa, requisitos, atividades, id]);
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Detalhes da oportunidade não encontrados' });
     res.json({ message: 'Detalhes da oportunidade atualizados' });
@@ -111,7 +99,7 @@ const updateOportunidadeDetalhes = async (req, res) => {
   }
 };
 
-const deleteOportunidadeDetalhes = async (req, res) => {
+export const deleteOportunidadeDetalhes = async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query(`DELETE FROM oportunidades_detalhes WHERE id = ?`, [id]);
@@ -121,13 +109,4 @@ const deleteOportunidadeDetalhes = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Erro ao deletar detalhes da oportunidade' });
   }
-};
-
-
-module.exports = {
-  getAllOportunidadesDetalhes,
-  getOportunidadeDetalhesById,
-  createOportunidadeDetalhes,
-  updateOportunidadeDetalhes,
-  deleteOportunidadeDetalhes
 };

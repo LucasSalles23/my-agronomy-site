@@ -1,4 +1,4 @@
-const db = require('../db');
+/* const db = require('../db');
 
 exports.getProfessorProfile = async (req, res) => {
   const { id } = req.params;
@@ -94,6 +94,112 @@ exports.updateProfessorProfile = async (req, res) => {
 
 
 exports.deleteProfessorProfile = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [result] = await db.query('DELETE FROM professor_profile WHERE professor_id = ?', [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Perfil do professor não encontrado' });
+    }
+    res.json({ message: 'Perfil do professor excluído com sucesso' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao excluir perfil do professor' });
+  }
+};
+ */
+
+
+
+// Arquivo: controllers/professorProfileController.js
+import db from '../db.js';
+
+// --- BUSCAR PERFIL COMPLETO DO PROFESSOR ---
+export const getProfessorProfile = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const [professorRows] = await db.query(
+      'SELECT * FROM view_professor_complete WHERE professor_id = ?',
+      [id]
+    );
+
+    if (professorRows.length === 0) {
+      return res.status(404).json({ message: 'Perfil do professor não encontrado' });
+    }
+    const professorData = professorRows[0];
+
+    const [
+      oportunidadesRows,
+      orientacoesRows,
+      projetosRows,
+      publicacoesRows,
+      disciplinasRows,
+    ] = await Promise.all([
+      db.query('SELECT id, titulo, tipo, descricao, data_publicacao FROM oportunidades WHERE professor_id = ?', [id]),
+      db.query('SELECT id, nome_estudante, tipo_orientacao, periodo, titulo_projeto FROM orientacoes WHERE professor_id = ?', [id]),
+      db.query('SELECT id, titulo, descricao, periodo, financiamento FROM projetos_pesquisa WHERE professor_id = ?', [id]),
+      db.query('SELECT id, titulo, autores, revista_ou_conferencia, ano, link_publicacao FROM publicacoes WHERE professor_id = ? ORDER BY ano DESC', [id]),
+      db.query(`
+        SELECT d.id, d.nome, d.codigo_disciplina 
+        FROM disciplinas d
+        JOIN professor_disciplina pd ON d.id = pd.disciplina_id
+        WHERE pd.professor_id = ?`, 
+        [id]
+      ),
+    ]);
+
+    const resultadoFinal = {
+      ...professorData,
+      oportunidades: oportunidadesRows[0],
+      orientacoes: orientacoesRows[0],
+      projetos_pesquisa: projetosRows[0],
+      publicacoes: publicacoesRows[0],
+      disciplinas: disciplinasRows[0],
+    };
+
+    res.json(resultadoFinal);
+
+  } catch (err) {
+    console.error("Erro ao buscar perfil completo do professor:", err);
+    res.status(500).json({ error: 'Erro interno no servidor' });
+  }
+};
+
+// --- CRIAR PERFIL ---
+export const createProfessorProfile = async (req, res) => {
+  const { professor_id, bio, academic_info, contact_info } = req.body;
+  try {
+    const [result] = await db.query(
+      'INSERT INTO professor_profile (professor_id, bio, academic_info, contact_info) VALUES (?, ?, ?, ?)',
+      [professor_id, bio, academic_info, contact_info]
+    );
+    res.status(201).json({ message: 'Perfil do professor criado com sucesso', id: result.insertId });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao criar perfil do professor' });
+  }
+};
+
+// --- ATUALIZAR PERFIL ---
+export const updateProfessorProfile = async (req, res) => {
+  const { id } = req.params;
+  const { bio, academic_info, contact_info } = req.body;
+  try {
+    const [result] = await db.query(
+      'UPDATE professor_profile SET bio = ?, academic_info = ?, contact_info = ? WHERE professor_id = ?',
+      [bio, academic_info, contact_info, id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Perfil do professor não encontrado' });
+    }
+    res.json({ message: 'Perfil do professor atualizado com sucesso' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao atualizar perfil do professor' });
+  }
+};
+
+// --- DELETAR PERFIL ---
+export const deleteProfessorProfile = async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query('DELETE FROM professor_profile WHERE professor_id = ?', [id]);

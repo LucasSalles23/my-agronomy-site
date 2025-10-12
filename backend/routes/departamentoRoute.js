@@ -1,4 +1,4 @@
-// ARQUIVO: backend/routes/departamentosRoute.js
+/* // ARQUIVO: backend/routes/departamentosRoute.js
 const express = require('express');
 const router = express.Router();
 const departamentosController = require('../controllers/departamentoController');
@@ -11,3 +11,18 @@ const departamentosController = require('../controllers/departamentoController')
 router.get('/', departamentosController.getDepartamentosComDetalhes);
 
 module.exports = router;
+ */
+
+
+
+
+// routes/departamentosRoute.js
+import express from 'express';
+import * as departamentosController from '../controllers/departamentosController.js';
+
+const router = express.Router();
+
+// GET /api/departamentos
+router.get('/', departamentosController.getDepartamentosComDetalhes);
+
+export default router;

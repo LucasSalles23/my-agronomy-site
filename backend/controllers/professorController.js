@@ -1,4 +1,4 @@
-// Arquivo: controllers/professorController.js
+/* // Arquivo: controllers/professorController.js
 const db = require('../db');
 
 // Função para buscar TODOS os professores
@@ -16,4 +16,21 @@ const getAllProfessors = async (req, res) => {
 // Não se esqueça de exportar!
 module.exports = {
   getAllProfessors,
+};
+ */
+
+
+
+// Arquivo: controllers/professorController.js
+import db from '../db.js';
+
+// Função para buscar TODOS os professores
+export const getAllProfessors = async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM professores');
+    res.json(rows);
+  } catch (err) {
+    console.error("Erro ao buscar professores:", err);
+    res.status(500).json({ error: 'Erro ao buscar professores' });
+  }
 };

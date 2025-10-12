@@ -1,4 +1,4 @@
-const express = require('express');
+/* const express = require('express');
 const router = express.Router();
 const noticiasController = require('../controllers/noticiasController');
 
@@ -15,3 +15,22 @@ router.get('/:id', noticiasController.getNoticiaById);       // Pegar notícia p
 // router.delete('/:id', noticiasController.deleteNoticia);  // Deletar notícia
 
 module.exports = router;
+ */
+
+
+
+// routes/noticiasRoute.js
+import express from 'express';
+import * as noticiasController from '../controllers/noticiasController.js';
+
+const router = express.Router();
+
+// Rotas CRUD para notícias
+router.get('/', noticiasController.getAllNoticias);          // Listar todas as notícias
+router.get('/:id', noticiasController.getNoticiaById);       // Pegar notícia por ID
+// Se quiser criar, atualizar e deletar notícias, pode adicionar:
+// router.post('/', noticiasController.createNoticia);       // Criar notícia
+// router.put('/:id', noticiasController.updateNoticia);     // Atualizar notícia
+// router.delete('/:id', noticiasController.deleteNoticia);  // Deletar notícia
+
+export default router;
