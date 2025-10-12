@@ -29,18 +29,27 @@ const getOportunidadeDetalhesById = async (req, res) => {
   const { id } = req.params;
   try {
     const [rows] = await db.query(`
-      SELECT 
-        o.id, o.titulo, o.descricao, o.tipo, o.data_publicacao,
-        d.carga_horaria, d.duracao, d.bolsa, d.requisitos, d.atividades,
-        p.nome AS professor_nome,
-        p.email AS professor_email,
-        dep.nome AS professor_departamento
-      FROM oportunidades o
-      JOIN oportunidades_detalhes d ON o.id = d.oportunidade_id
-      JOIN professores p ON o.professor_id = p.id
-      JOIN departamentos dep ON p.departamento_id = dep.id
-      WHERE o.id = ?
-    `, [id]);
+  SELECT 
+    o.id, 
+    o.titulo, 
+    o.descricao, 
+    o.tipo, 
+    o.data_publicacao,
+    d.carga_horaria, 
+    d.duracao, 
+    d.bolsa, 
+    d.requisitos, 
+    d.atividades,
+    p.nome AS professor_nome,
+    p.email AS professor_email,
+    dep.nome AS professor_departamento
+  FROM oportunidades o
+  JOIN oportunidades_detalhes d ON o.id = d.oportunidade_id
+  JOIN professores p ON o.professor_id = p.id
+  JOIN departamentos dep ON p.departamento_id = dep.id
+  WHERE o.id = ?
+`, [id]);
+
 
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Detalhes da oportunidade não encontrados' });
