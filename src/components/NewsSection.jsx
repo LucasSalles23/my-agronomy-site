@@ -9,13 +9,15 @@ const NewsSection = ({ onNewsClick, onViewAllNews }) => {
 
   useEffect(() => {
     const fetchNews = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/noticias`);
+        const response = await fetch('https://my-agronomy-site-production.up.railway.app/api/noticias');
         if (!response.ok) throw new Error(`Erro ao buscar notícias: ${response.status}`);
         const data = await response.json();
         setNews(data);
       } catch (err) {
-        console.error(err);
+        console.error("Erro ao buscar notícias:", err);
         setError('Não foi possível carregar as notícias');
       } finally {
         setLoading(false);
@@ -24,6 +26,7 @@ const NewsSection = ({ onNewsClick, onViewAllNews }) => {
 
     fetchNews();
   }, []);
+
 
 
   // Mostra apenas as 3 primeiras notícias

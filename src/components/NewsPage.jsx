@@ -18,7 +18,7 @@ const NewsPage = ({ onBack, onNewsClick }) => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/noticias`);
+        const response = await fetch('https://my-agronomy-site-production.up.railway.app/api/noticias');
         if (!response.ok) throw new Error('Erro ao buscar notícias do backend');
         const data = await response.json();
 
@@ -58,6 +58,7 @@ const NewsPage = ({ onBack, onNewsClick }) => {
 
     fetchNews();
   }, []);
+
 
 
   const filteredNews = newsData.filter(news => {

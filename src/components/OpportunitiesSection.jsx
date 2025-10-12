@@ -19,13 +19,15 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
   // --- Buscar oportunidades ---
   useEffect(() => {
     const fetchOpportunities = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/opportunities`);
+        const response = await fetch('https://my-agronomy-site-production.up.railway.app/api/opportunities');
         if (!response.ok) throw new Error(`Erro: ${response.status}`);
         const data = await response.json();
         setOpportunities(data);
       } catch (e) {
-        console.error(e);
+        console.error("Erro ao buscar oportunidades:", e);
         setError("Não foi possível carregar as oportunidades.");
       } finally {
         setLoading(false);
@@ -34,6 +36,7 @@ const OpportunitiesSection = ({ onOpportunityClick, onNavigate }) => {
 
     fetchOpportunities();
   }, []);
+
 
 
   // --- Buscar departamentos ---
