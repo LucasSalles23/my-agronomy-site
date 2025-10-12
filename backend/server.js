@@ -43,8 +43,14 @@ const db = require('./db'); // Mantém a conexão, usada pelos controllers
 
 const app = express();
 
-// Middlewares
-app.use(cors());
+// ---------------------- MIDDLEWARES ---------------------- //
+
+// Permitir requisições apenas do frontend no Vercel
+app.use(cors({
+  origin: 'https://my-agronomy-site.vercel.app'
+}));
+
+// Permitir receber JSON no corpo das requisições
 app.use(express.json());
 
 // ---------------------- ROTAS ---------------------- //
@@ -77,12 +83,11 @@ app.use('/api/contagens', contagensRoutes);
 const noticiasRoutes = require('./routes/noticiasRoute');
 app.use('/api/noticias', noticiasRoutes);
 
-
-// rota padrao 
+// ---------------------- ROTA PADRÃO ---------------------- //
 app.get('/', (req, res) => {
   res.send('API rodando! Use as rotas /api/... para acessar os dados.');
 });
 
 // ---------------------- SERVIDOR ---------------------- //
-const PORT = process.env.PORT || 5000; // fallback local
+const PORT = process.env.PORT || 5000; // Railway fornece a porta via env
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
