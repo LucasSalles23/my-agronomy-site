@@ -34,10 +34,9 @@ app.use('/api/noticias', noticiasRoutes);
 const PORT = process.env.PORT || 5000; // 🔹 melhor usar process.env.PORT no Railway
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
 
- */
+*/
 
 
-// server.js
 const express = require('express');
 const cors = require('cors');
 const db = require('./db'); // Mantém a conexão, usada pelos controllers
@@ -79,6 +78,5 @@ const noticiasRoutes = require('./routes/noticiasRoute');
 app.use('/api/noticias', noticiasRoutes);
 
 // ---------------------- SERVIDOR ---------------------- //
-
-const PORT = process.env.PORT; // Para compatibilidade com Railway/Outros
+const PORT = process.env.PORT || 5000; // fallback local
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

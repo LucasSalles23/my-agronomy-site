@@ -161,11 +161,11 @@ exports.deleteDepartamento = async (req, res) => {
 
 
 
-// controllers/departamentosController.js
-import db from '../db.js';
+// backend/controllers/departamentosController.js
+const db = require('../db');
 
 // --- LISTAR TODOS COM DETALHES ---
-export const getDepartamentosComDetalhes = async (req, res) => {
+const getDepartamentosComDetalhes = async (req, res) => {
     try {
         const [departamentos] = await db.query(`
             SELECT id, nome, descricao, email, telefone, chefe_de_departamento 
@@ -220,7 +220,7 @@ export const getDepartamentosComDetalhes = async (req, res) => {
 };
 
 // --- READ: Buscar por ID ---
-export const getDepartamentoById = async (req, res) => {
+const getDepartamentoById = async (req, res) => {
     const { id } = req.params;
     try {
         const [rows] = await db.query('SELECT * FROM departamentos WHERE id = ?', [id]);
@@ -235,7 +235,7 @@ export const getDepartamentoById = async (req, res) => {
 };
 
 // --- CREATE ---
-export const createDepartamento = async (req, res) => {
+const createDepartamento = async (req, res) => {
     const { nome, descricao } = req.body;
     if (!nome || !descricao) {
         return res.status(400).json({ message: 'Nome e descrição são obrigatórios.' });
@@ -254,7 +254,7 @@ export const createDepartamento = async (req, res) => {
 };
 
 // --- UPDATE ---
-export const updateDepartamento = async (req, res) => {
+const updateDepartamento = async (req, res) => {
     const { id } = req.params;
     const { nome, descricao } = req.body;
 
@@ -280,7 +280,7 @@ export const updateDepartamento = async (req, res) => {
 };
 
 // --- DELETE ---
-export const deleteDepartamento = async (req, res) => {
+const deleteDepartamento = async (req, res) => {
     const { id } = req.params;
     try {
         const [result] = await db.query('DELETE FROM departamentos WHERE id = ?', [id]);
@@ -297,4 +297,12 @@ export const deleteDepartamento = async (req, res) => {
         console.error(`Erro ao deletar departamento ${id}:`, err);
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
+};
+
+module.exports = {
+    getDepartamentosComDetalhes,
+    getDepartamentoById,
+    createDepartamento,
+    updateDepartamento,
+    deleteDepartamento
 };

@@ -21,11 +21,11 @@ module.exports = {
 
 
 
-// Arquivo: controllers/professorController.js
-import db from '../db.js';
+// controllers/professorController.js
+const db = require('../db.js');
 
 // Função para buscar TODOS os professores
-export const getAllProfessors = async (req, res) => {
+const getAllProfessors = async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM professores');
     res.json(rows);
@@ -33,4 +33,8 @@ export const getAllProfessors = async (req, res) => {
     console.error("Erro ao buscar professores:", err);
     res.status(500).json({ error: 'Erro ao buscar professores' });
   }
+};
+
+module.exports = {
+  getAllProfessors
 };

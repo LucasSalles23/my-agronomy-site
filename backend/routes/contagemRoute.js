@@ -8,17 +8,18 @@ const { getContagens } = require('../controllers/contagensController');
 router.get('/', getContagens);
 
 module.exports = router;
- */
+
+*/
 
 
 
 // routes/contagens.js
-import express from 'express';
-import { getContagens } from '../controllers/contagensController.js';
-
+const express = require('express');
+const { getContagens } = require('../controllers/contagensController');
 const router = express.Router();
 
 // GET /api/contagens
 router.get('/', getContagens);
 
-export default router;
+module.exports = router;
+

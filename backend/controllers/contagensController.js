@@ -25,11 +25,11 @@ module.exports = {
  */
 
 
-// controllers/contagensController.js
-import db from '../db.js';
+// backend/controllers/contagensController.js
+const db = require('../db');
 
 // Função para retornar as contagens
-export const getContagens = async (req, res) => {
+const getContagens = async (req, res) => {
   try {
     const [professores] = await db.query('SELECT COUNT(*) AS total FROM professores');
     const [departamentos] = await db.query('SELECT COUNT(*) AS total FROM departamentos');
@@ -45,3 +45,5 @@ export const getContagens = async (req, res) => {
     res.status(500).json({ error: 'Erro ao buscar contagens' });
   }
 };
+
+module.exports = { getContagens };

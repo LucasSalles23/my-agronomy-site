@@ -128,10 +128,10 @@ exports.deleteOpportunity = async (req, res) => {
 
 
 // controllers/oportunidadesController.js
-import db from '../db.js';
+const db = require('../db.js');
 
 // --- 1. Buscar todas as oportunidades ---
-export const getAllOpportunities = async (req, res) => {
+const getAllOpportunities = async (req, res) => {
   const sql = `
     SELECT 
         o.id, 
@@ -161,7 +161,7 @@ export const getAllOpportunities = async (req, res) => {
 };
 
 // --- 2. Buscar uma oportunidade pelo ID ---
-export const getOpportunityById = async (req, res) => {
+const getOpportunityById = async (req, res) => {
   const { id } = req.params;
   const sql = `
     SELECT 
@@ -194,7 +194,7 @@ export const getOpportunityById = async (req, res) => {
 };
 
 // --- 3. Criar oportunidade ---
-export const createOpportunity = async (req, res) => {
+const createOpportunity = async (req, res) => {
   const { titulo, tipo, descricao, data_publicacao, professor_id } = req.body;
   try {
     const [result] = await db.query(
@@ -209,7 +209,7 @@ export const createOpportunity = async (req, res) => {
 };
 
 // --- 4. Atualizar oportunidade ---
-export const updateOpportunity = async (req, res) => {
+const updateOpportunity = async (req, res) => {
   const { id } = req.params;
   const { titulo, tipo, descricao, data_publicacao, professor_id } = req.body;
   try {
@@ -226,7 +226,7 @@ export const updateOpportunity = async (req, res) => {
 };
 
 // --- 5. Deletar oportunidade ---
-export const deleteOpportunity = async (req, res) => {
+const deleteOpportunity = async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query('DELETE FROM oportunidades WHERE id = ?', [id]);
@@ -236,4 +236,12 @@ export const deleteOpportunity = async (req, res) => {
     console.error("Erro ao excluir oportunidade:", err);
     res.status(500).json({ error: "Erro interno do servidor" });
   }
+};
+
+module.exports = {
+  getAllOpportunities,
+  getOpportunityById,
+  createOpportunity,
+  updateOpportunity,
+  deleteOpportunity
 };

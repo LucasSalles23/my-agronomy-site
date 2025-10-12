@@ -110,11 +110,11 @@ exports.deleteProfessorProfile = async (req, res) => {
 
 
 
-// Arquivo: controllers/professorProfileController.js
-import db from '../db.js';
+// controllers/professorProfileController.js
+const db = require('../db.js');
 
 // --- BUSCAR PERFIL COMPLETO DO PROFESSOR ---
-export const getProfessorProfile = async (req, res) => {
+const getProfessorProfile = async (req, res) => {
   const { id } = req.params;
   try {
     const [professorRows] = await db.query(
@@ -165,7 +165,7 @@ export const getProfessorProfile = async (req, res) => {
 };
 
 // --- CRIAR PERFIL ---
-export const createProfessorProfile = async (req, res) => {
+const createProfessorProfile = async (req, res) => {
   const { professor_id, bio, academic_info, contact_info } = req.body;
   try {
     const [result] = await db.query(
@@ -180,7 +180,7 @@ export const createProfessorProfile = async (req, res) => {
 };
 
 // --- ATUALIZAR PERFIL ---
-export const updateProfessorProfile = async (req, res) => {
+const updateProfessorProfile = async (req, res) => {
   const { id } = req.params;
   const { bio, academic_info, contact_info } = req.body;
   try {
@@ -199,7 +199,7 @@ export const updateProfessorProfile = async (req, res) => {
 };
 
 // --- DELETAR PERFIL ---
-export const deleteProfessorProfile = async (req, res) => {
+const deleteProfessorProfile = async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query('DELETE FROM professor_profile WHERE professor_id = ?', [id]);
@@ -211,4 +211,11 @@ export const deleteProfessorProfile = async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Erro ao excluir perfil do professor' });
   }
+};
+
+module.exports = {
+  getProfessorProfile,
+  createProfessorProfile,
+  updateProfessorProfile,
+  deleteProfessorProfile
 };

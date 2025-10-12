@@ -15,14 +15,13 @@ router.get('/:id', noticiasController.getNoticiaById);       // Pegar notícia p
 // router.delete('/:id', noticiasController.deleteNoticia);  // Deletar notícia
 
 module.exports = router;
- */
+*/
 
 
 
 // routes/noticiasRoute.js
-import express from 'express';
-import * as noticiasController from '../controllers/noticiasController.js';
-
+const express = require('express');
+const noticiasController = require('../controllers/noticiasController');
 const router = express.Router();
 
 // Rotas CRUD para notícias
@@ -33,4 +32,4 @@ router.get('/:id', noticiasController.getNoticiaById);       // Pegar notícia p
 // router.put('/:id', noticiasController.updateNoticia);     // Atualizar notícia
 // router.delete('/:id', noticiasController.deleteNoticia);  // Deletar notícia
 
-export default router;
+module.exports = router;

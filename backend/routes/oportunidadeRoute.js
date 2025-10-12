@@ -13,9 +13,9 @@ module.exports = router;
  */
 
 
-// routes/oportunidadesRoute.js
-import express from 'express';
-import * as opportunityController from '../controllers/oportunidadesController.js';
+// backend/routes/oportunidadesRoute.js
+const express = require('express');
+const opportunityController = require('../controllers/oportunidadesController');
 
 const router = express.Router();
 
@@ -26,4 +26,5 @@ router.post('/', opportunityController.createOpportunity);
 router.put('/:id', opportunityController.updateOpportunity);
 router.delete('/:id', opportunityController.deleteOpportunity);
 
-export default router;
+module.exports = router;
+

@@ -1,8 +1,8 @@
-// ARQUIVO: backend/controllers/oportunidadesDetalhesController.js
-import db from '../db.js';
+// controllers/oportunidadesDetalhesController.js
+const db = require('../db.js');
 
-// --- LISTAR TODOS (CORRIGIDO) ---
-export const getAllOportunidadesDetalhes = async (req, res) => {
+// --- LISTAR TODOS ---
+const getAllOportunidadesDetalhes = async (req, res) => {
   try {
     const [rows] = await db.query(`
       SELECT 
@@ -24,8 +24,8 @@ export const getAllOportunidadesDetalhes = async (req, res) => {
   }
 };
 
-// --- PEGAR POR ID (CORRIGIDO) ---
-export const getOportunidadeDetalhesById = async (req, res) => {
+// --- PEGAR POR ID ---
+const getOportunidadeDetalhesById = async (req, res) => {
   const { id } = req.params;
   try {
     const [rows] = await db.query(`
@@ -66,8 +66,8 @@ export const getOportunidadeDetalhesById = async (req, res) => {
   }
 };
 
-// --- CRIAR, ATUALIZAR, DELETAR ---
-export const createOportunidadeDetalhes = async (req, res) => {
+// --- CRIAR ---
+const createOportunidadeDetalhes = async (req, res) => {
   const { oportunidade_id, professor_id, carga_horaria, duracao, bolsa, requisitos, atividades } = req.body;
   try {
     const [result] = await db.query(`
@@ -82,7 +82,8 @@ export const createOportunidadeDetalhes = async (req, res) => {
   }
 };
 
-export const updateOportunidadeDetalhes = async (req, res) => {
+// --- ATUALIZAR ---
+const updateOportunidadeDetalhes = async (req, res) => {
   const { id } = req.params;
   const { oportunidade_id, professor_id, carga_horaria, duracao, bolsa, requisitos, atividades } = req.body;
   try {
@@ -99,7 +100,8 @@ export const updateOportunidadeDetalhes = async (req, res) => {
   }
 };
 
-export const deleteOportunidadeDetalhes = async (req, res) => {
+// --- DELETAR ---
+const deleteOportunidadeDetalhes = async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await db.query(`DELETE FROM oportunidades_detalhes WHERE id = ?`, [id]);
@@ -109,4 +111,12 @@ export const deleteOportunidadeDetalhes = async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Erro ao deletar detalhes da oportunidade' });
   }
+};
+
+module.exports = {
+  getAllOportunidadesDetalhes,
+  getOportunidadeDetalhesById,
+  createOportunidadeDetalhes,
+  updateOportunidadeDetalhes,
+  deleteOportunidadeDetalhes
 };

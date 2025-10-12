@@ -15,9 +15,9 @@ module.exports = router;
 
 
 
-// routes/professoresProfileRoute.js
-import express from 'express';
-import * as professoresProfileController from '../controllers/professoresProfileController.js';
+// backend/routes/professoresProfileRoute.js
+const express = require('express');
+const professoresProfileController = require('../controllers/professoresProfileController');
 
 const router = express.Router();
 
@@ -27,4 +27,5 @@ router.post('/', professoresProfileController.createProfessorProfile);
 router.put('/:id', professoresProfileController.updateProfessorProfile);
 router.delete('/:id', professoresProfileController.deleteProfessorProfile);
 
-export default router;
+module.exports = router;
+

@@ -11,18 +11,18 @@ const departamentosController = require('../controllers/departamentoController')
 router.get('/', departamentosController.getDepartamentosComDetalhes);
 
 module.exports = router;
- */
+*/
 
 
 
 
 // routes/departamentosRoute.js
-import express from 'express';
-import * as departamentosController from '../controllers/departamentosController.js';
-
+const express = require('express');
+const departamentosController = require('../controllers/departamentoController');
 const router = express.Router();
 
 // GET /api/departamentos
 router.get('/', departamentosController.getDepartamentosComDetalhes);
 
-export default router;
+module.exports = router;
+

@@ -122,18 +122,15 @@ module.exports = {
   updateNoticia,
   deleteNoticia
 };
- */
+*/
 
 
 
-
-
-
-// controllers/noticiasController.js
-import noticiasDB from '../noticias_db.js';
+// backend/controllers/noticiasController.js
+const noticiasDB = require('../noticias_db.js');
 
 // --- LISTAR TODAS AS NOTÍCIAS ---
-export const getAllNoticias = async (req, res) => {
+const getAllNoticias = async (req, res) => {
   try {
     const [rows] = await noticiasDB.query(`
       SELECT 
@@ -168,7 +165,7 @@ export const getAllNoticias = async (req, res) => {
 };
 
 // --- Buscar notícia individual ---
-export const getNoticiaById = async (req, res) => {
+const getNoticiaById = async (req, res) => {
   const { id } = req.params;
   try {
     const [rows] = await noticiasDB.query(`
@@ -198,7 +195,7 @@ export const getNoticiaById = async (req, res) => {
 };
 
 // --- CRIAR NOTÍCIA ---
-export const createNoticia = async (req, res) => {
+const createNoticia = async (req, res) => {
   const { titulo, resumo, conteudo, categoria, autor, revisor, data_publicacao, tags } = req.body;
   try {
     const [result] = await noticiasDB.query(
@@ -214,7 +211,7 @@ export const createNoticia = async (req, res) => {
 };
 
 // --- ATUALIZAR NOTÍCIA ---
-export const updateNoticia = async (req, res) => {
+const updateNoticia = async (req, res) => {
   const { id } = req.params;
   const { titulo, resumo, conteudo, categoria, autor, revisor, data_publicacao, tags } = req.body;
   try {
@@ -233,7 +230,7 @@ export const updateNoticia = async (req, res) => {
 };
 
 // --- DELETAR NOTÍCIA ---
-export const deleteNoticia = async (req, res) => {
+const deleteNoticia = async (req, res) => {
   const { id } = req.params;
   try {
     const [result] = await noticiasDB.query('DELETE FROM noticias WHERE id = ?', [id]);
@@ -244,3 +241,13 @@ export const deleteNoticia = async (req, res) => {
     res.status(500).json({ error: 'Erro ao deletar notícia' });
   }
 };
+
+module.exports = {
+  getAllNoticias,
+  getNoticiaById,
+  createNoticia,
+  updateNoticia,
+  deleteNoticia
+};
+
+

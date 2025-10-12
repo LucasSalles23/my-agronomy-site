@@ -11,13 +11,14 @@ module.exports = router;
  */
 
 
-// routes/professorRoutes.js
-import express from 'express';
-import * as professorController from '../controllers/professorController.js';
+// backend/routes/professorRoute.js
+const express = require('express');
+const professorController = require('../controllers/professorController');
 
 const router = express.Router();
 
 // GET /api/professors
 router.get('/', professorController.getAllProfessors);
 
-export default router;
+module.exports = router;
+
