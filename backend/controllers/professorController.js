@@ -27,7 +27,7 @@ const db = require('../db.js');
 // Função para buscar TODOS os professores
 const getAllProfessors = async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM professores');
+    const [rows] = await db.query('SELECT * FROM railway.professores');
     res.json(rows);
   } catch (err) {
     console.error("Erro ao buscar professores:", err);
