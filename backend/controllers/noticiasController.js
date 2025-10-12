@@ -127,7 +127,7 @@ module.exports = {
 
 
 // backend/controllers/noticiasController.js
-const noticiasDB = require('../noticias_db.js');
+const noticiasDB = require('../db.js');
 
 // --- LISTAR TODAS AS NOTÍCIAS ---
 const getAllNoticias = async (req, res) => {
