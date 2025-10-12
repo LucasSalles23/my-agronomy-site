@@ -1,16 +1,11 @@
-import { query } from '../backend/lib/db';
+import { query } from "../lib/db.js";
 
 export default async function handler(req, res) {
   try {
-    const testData = await query({
-      query: 'SELECT id, nome FROM professores LIMIT 3',
-      values: [],
-    });
-    res.status(200).json({
-      status: 'Conexão com o Railway bem-sucedida!',
-      data: testData,
-    });
+    const result = await query({ query: "SELECT NOW() AS current_time" });
+    res.status(200).json({ success: true, data: result });
   } catch (error) {
-    res.status(500).json({ status: 'Erro!', error: error.message });
+    console.error("Erro no handler:", error.message);
+    res.status(500).json({ success: false, error: error.message });
   }
 }
