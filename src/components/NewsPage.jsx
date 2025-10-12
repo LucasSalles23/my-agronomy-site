@@ -18,9 +18,9 @@ const NewsPage = ({ onBack, onNewsClick }) => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch('http://my-agronomy-site-production.up.railway.app/api/noticias')
-        if (!response.ok) throw new Error('Erro ao buscar notícias do backend')
-        const data = await response.json()
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/noticias`);
+        if (!response.ok) throw new Error('Erro ao buscar notícias do backend');
+        const data = await response.json();
 
         const formatted = data.map(item => ({
           id: item.id,
@@ -45,18 +45,20 @@ const NewsPage = ({ onBack, onNewsClick }) => {
           },
           image: item.url_imagem || '/api/placeholder/400/200',
           tags: item.tags ? item.tags.split(',') : []
-        }))
+        }));
 
-        setNewsData(formatted)
-        setLoading(false)
+        setNewsData(formatted);
+        setLoading(false);
       } catch (err) {
-        console.error('Erro ao buscar notícias do backend:', err)
-        setNewsData([])
-        setLoading(false)
+        console.error('Erro ao buscar notícias do backend:', err);
+        setNewsData([]);
+        setLoading(false);
       }
-    }
-    fetchNews()
-  }, [])
+    };
+
+    fetchNews();
+  }, []);
+
 
   const filteredNews = newsData.filter(news => {
     const matchesSearch =

@@ -12,9 +12,9 @@ const NewsDetail = ({ newsId, onBack }) => {
   useEffect(() => {
     const fetchNewsDetail = async () => {
       try {
-        const response = await fetch(`http://my-agronomy-site-production.up.railway.app/api/noticias/${newsId}`)
-        if (!response.ok) throw new Error('Erro ao buscar notícia do backend')
-        const item = await response.json()
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/noticias/${newsId}`);
+        if (!response.ok) throw new Error('Erro ao buscar notícia do backend');
+        const item = await response.json();
 
         // Formatando os dados
         const formatted = {
@@ -40,19 +40,19 @@ const NewsDetail = ({ newsId, onBack }) => {
           },
           image: item.url_imagem || '/api/placeholder/800/400',
           tags: item.tags ? item.tags.split(',') : []
-        }
+        };
 
-        setNews(formatted)
-        setLoading(false)
+        setNews(formatted);
+        setLoading(false);
       } catch (err) {
-        console.error('Erro ao buscar notícia do backend:', err)
-        setNews(null)
-        setLoading(false)
+        console.error('Erro ao buscar notícia do backend:', err);
+        setNews(null);
+        setLoading(false);
       }
-    }
+    };
 
-    fetchNewsDetail()
-  }, [newsId])
+    fetchNewsDetail();
+  }, [newsId]);
 
   if (loading) {
     return (
@@ -111,8 +111,8 @@ const NewsDetail = ({ newsId, onBack }) => {
         <article className="bg-white rounded-lg shadow-sm overflow-hidden">
           {/* Imagem Principal */}
           <div className="relative">
-            <img 
-              src={news.image} 
+            <img
+              src={news.image}
               alt={news.title}
               className="w-full h-64 md:h-96 object-cover"
             />

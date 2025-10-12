@@ -205,11 +205,13 @@ function App() {
   const [professors, setProfessors] = useState([]);
   const [news, setNews] = useState([]);
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   // --- BUSCA PROFESSORES ---
   useEffect(() => {
     const fetchProfessors = async () => {
       try {
-        const response = await fetch('http://my-agronomy-site-production.up.railway.app/api/professors');
+        const response = await fetch(`${API_URL}/api/professors`);
         const data = await response.json();
         setProfessors(data);
       } catch (error) {
@@ -218,13 +220,13 @@ function App() {
       }
     };
     fetchProfessors();
-  }, []);
+  }, [API_URL]);
 
   // --- BUSCA NOTÍCIAS ---
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await fetch('http://my-agronomy-site-production.up.railway.app/api/noticias');
+        const response = await fetch(`${API_URL}/api/noticias`);
         const data = await response.json();
         setNews(data);
       } catch (error) {
@@ -233,7 +235,7 @@ function App() {
       }
     };
     fetchNews();
-  }, []);
+  }, [API_URL]);
 
   // --- CLIQUE EM OPORTUNIDADE ---
   const handleOpportunityClick = (opportunityId) => {
@@ -245,7 +247,6 @@ function App() {
   // --- CLIQUE EM PROFESSOR ---
   const handleProfessorClick = (professorId) => {
     console.log(`[App.jsx] Clique no Professor, ID:`, professorId);
-    // Passa apenas o ID, o ProfessorProfile vai buscar os detalhes
     setSelectedProfessor({ id: professorId });
     setCurrentPage('professor-profile');
   };
@@ -323,7 +324,7 @@ function App() {
         console.log(`[App.jsx] Renderizando Profile`, { enviando_professor: selectedProfessor });
         return (
           <ProfessorProfile
-            professor={selectedProfessor} // agora contém apenas {id}
+            professor={selectedProfessor} // contém apenas {id}
             onBack={() => handleNavigation('home')}
             onOpportunityClick={handleOpportunityClick}
           />
@@ -356,3 +357,4 @@ function App() {
 }
 
 export default App;
+

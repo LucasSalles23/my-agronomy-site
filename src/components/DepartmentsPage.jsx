@@ -23,7 +23,7 @@ const DepartmentsPage = ({ onProfessorClick, onViewAllDepartments }) => {
     const fetchDepartments = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://my-agronomy-site-production.up.railway.app/api/departamentos');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/departamentos`);
         if (!response.ok) {
           throw new Error('Falha ao buscar os dados dos departamentos.');
         }
@@ -39,7 +39,9 @@ const DepartmentsPage = ({ onProfessorClick, onViewAllDepartments }) => {
     fetchDepartments();
   }, []);
 
+
   const handleProfessorCardClick = (profId) => {
+    console.log('[DepartmentsPage] Professor clicado:', profId);
     if (onProfessorClick) {
       onProfessorClick(profId);
     } else {
@@ -48,12 +50,15 @@ const DepartmentsPage = ({ onProfessorClick, onViewAllDepartments }) => {
   };
 
   if (loading) {
+    console.log('[DepartmentsPage] Carregando departamentos...');
     return <section className="py-16 text-center">Carregando departamentos...</section>;
   }
 
   if (error) {
+    console.error('[DepartmentsPage] Erro ao carregar departamentos:', error);
     return <section className="py-16 text-center text-red-500">Erro ao carregar: {error}</section>;
   }
+
 
   return (
     <section className="py-16 bg-gray-50" id="departamentos">
