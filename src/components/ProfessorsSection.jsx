@@ -68,6 +68,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
                 <option value="Ciência do Solo">Ciência do Solo</option>
                 <option value="Genética">Genética</option>
                 <option value="Fitopatologia e Nematologia">Fitopatologia</option>
+                <option value="Fitotecnia e fitossanidade">Fitotecnia e fitossanidade(DFF)</option>
               </select>
             </div>
           </div>
