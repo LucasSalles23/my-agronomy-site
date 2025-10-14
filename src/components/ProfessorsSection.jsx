@@ -97,7 +97,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
                   {/* Departamento */}
                   <div className="flex items-center mb-3 text-gray-600">
                     <Building className="h-4 w-4 mr-2" />
-                    <span className="text-sm">{professor.departamento}</span>
+                    <span className="text-sm">{professor.nome}</span>
                   </div>
 
                   {/* Especializações */}
