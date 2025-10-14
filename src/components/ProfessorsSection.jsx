@@ -68,7 +68,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
                 <option value="Ciência do Solo">Ciência do Solo</option>
                 <option value="Genética">Genética</option>
                 <option value="Fitopatologia e Nematologia">Fitopatologia</option>
-                <option value="Fitotecnia e fitossanidade">Fitotecnia e fitossanidade</option>
+                <option value="Fitotecnia e fitossanidade">Fitotecnia e fito</option>
               </select>
             </div>
           </div>
@@ -97,7 +97,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
                   {/* Departamento */}
                   <div className="flex items-center mb-3 text-gray-600">
                     <Building className="h-4 w-4 mr-2" />
-                    <span className="text-sm">{departamento.nome}</span>
+                    <span className="text-sm">{professor.departamento_id}</span>
                   </div>
 
                   {/* Especializações */}
