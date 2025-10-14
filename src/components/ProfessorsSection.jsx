@@ -31,6 +31,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
     return dep ? dep.nome : 'Desconhecido'
   }
 
+
   // Filtrar professores
   const filteredProfessors = professors.filter(p => {
     const matchesNameOrSpec =
