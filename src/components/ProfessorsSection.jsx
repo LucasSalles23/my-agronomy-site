@@ -1,36 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Mail, Search, User, Building } from 'lucide-react'
 
-const ProfessorsSection = ({ onProfessorClick }) => {
-  const [professors, setProfessors] = useState([])
-  const [departments, setDepartments] = useState([])
+const ProfessorsSection = ({ onProfessorClick, professors, departments }) => {
   const [search, setSearch] = useState('')
   const [departmentFilter, setDepartmentFilter] = useState('')
   const [visibleCount, setVisibleCount] = useState(10) // mostra 10 inicialmente
-
-  // Buscar professores
-  useEffect(() => {
-    axios.get('https://my-agronomy-site-production.up.railway.app/api/professors')
-      .then(res => setProfessors(res.data))
-      .catch(err => console.error(err))
-  }, [])
-
-  // Buscar departamentos
-  useEffect(() => {
-    axios.get('https://my-agronomy-site-production.up.railway.app/api/departments')
-      .then(res => setDepartments(res.data))
-      .catch(err => console.error(err))
-  }, [])
 
   // Função para obter o nome do departamento pelo id
   const getDepartmentName = (id) => {
     const dep = departments.find(d => d.id === id)
     return dep ? dep.nome : 'Desconhecido'
   }
-
 
   // Filtrar professores
   const filteredProfessors = professors.filter(p => {
