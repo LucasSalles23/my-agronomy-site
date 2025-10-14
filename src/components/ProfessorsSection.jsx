@@ -6,26 +6,43 @@ import { Mail, Search, User, Building } from 'lucide-react'
 
 const ProfessorsSection = ({ onProfessorClick }) => {
   const [professors, setProfessors] = useState([])
+  const [departments, setDepartments] = useState([]) // ✅ estado para departamentos
   const [search, setSearch] = useState('')
   const [departmentFilter, setDepartmentFilter] = useState('')
-  const [visibleCount, setVisibleCount] = useState(10) // ✅ mostra 10 inicialmente
+  const [visibleCount, setVisibleCount] = useState(10)
 
-  // Buscar professores do backend
+  // Fetch de professores
   useEffect(() => {
     axios.get('https://my-agronomy-site-production.up.railway.app/api/professors')
-      .then((res) => {
+      .then(res => {
         console.log("[ProfessorsSection] Professores recebidos:", res.data)
         setProfessors(res.data)
       })
-      .catch((err) => console.error("Erro ao buscar professores:", err))
+      .catch(err => console.error("Erro ao buscar professores:", err))
   }, [])
 
+  // Fetch de departamentos
+  useEffect(() => {
+    axios.get('https://my-agronomy-site-production.up.railway.app/api/departamentos')
+      .then(res => {
+        console.log("[ProfessorsSection] Departamentos recebidos:", res.data)
+        setDepartments(res.data)
+      })
+      .catch(err => console.error("Erro ao buscar departamentos:", err))
+  }, [])
+
+  // Enriquecer professores com o nome do departamento
+  const professorsWithDepartment = professors.map(p => {
+    const dept = departments.find(d => d.id === p.departamento_id)
+    return { ...p, departamentoNome: dept ? dept.nome : 'Desconhecido' }
+  })
+
   // Filtrar professores
-  const filteredProfessors = professors.filter(p => {
+  const filteredProfessors = professorsWithDepartment.filter(p => {
     const matchesNameOrSpec =
       p.nome.toLowerCase().includes(search.toLowerCase()) ||
       p.especializacao.toLowerCase().includes(search.toLowerCase())
-    const matchesDepartment = departmentFilter ? p.departamento === departmentFilter : true
+    const matchesDepartment = departmentFilter ? p.departamentoNome === departmentFilter : true
     return matchesNameOrSpec && matchesDepartment
   })
 
@@ -65,10 +82,9 @@ const ProfessorsSection = ({ onProfessorClick }) => {
                 onChange={(e) => setDepartmentFilter(e.target.value)}
               >
                 <option value="">Todos os Departamentos</option>
-                <option value="Ciência do Solo">Ciência do Solo</option>
-                <option value="Genética">Genética</option>
-                <option value="Fitopatologia e Nematologia">Fitopatologia</option>
-                <option value="Fitotecnia e fitossanidade">Fitotecnia e fito</option>
+                {departments.map(d => (
+                  <option key={d.id} value={d.nome}>{d.nome}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -97,7 +113,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
                   {/* Departamento */}
                   <div className="flex items-center mb-3 text-gray-600">
                     <Building className="h-4 w-4 mr-2" />
-                    <span className="text-sm">{professor.departamento_id}</span>
+                    <span className="text-sm">{professor.departamentoNome}</span>
                   </div>
 
                   {/* Especializações */}
@@ -160,7 +176,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
               variant="outline"
               size="lg"
               className="border-green-700 text-green-700 hover:bg-green-700 hover:text-white cursor-pointer"
-              onClick={() => setVisibleCount(prev => prev + 10)} // ✅ agora carrega +10
+              onClick={() => setVisibleCount(prev => prev + 10)}
             >
               Ver mais professores
             </Button>
