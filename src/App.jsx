@@ -182,35 +182,35 @@ function App() {
 export default App;
  */
 
-import React, { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Mail, Search, User, Building } from 'lucide-react'
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Mail, Search, User, Building } from 'lucide-react';
 
-const ProfessorsSection = ({ onProfessorClick, professors, departments }) => {
-  const [search, setSearch] = useState('')
-  const [departmentFilter, setDepartmentFilter] = useState('')
-  const [visibleCount, setVisibleCount] = useState(10) // mostra 10 inicialmente
+const ProfessorsSection = ({ onProfessorClick, professors = [], departments = [] }) => {
+  const [search, setSearch] = useState('');
+  const [departmentFilter, setDepartmentFilter] = useState('');
+  const [visibleCount, setVisibleCount] = useState(10); // mostra 10 inicialmente
 
   // Função para obter o nome do departamento pelo id
   const getDepartmentName = (id) => {
-    const dep = departments.find(d => d.id === id)
-    return dep ? dep.nome : 'Desconhecido'
-  }
+    const dep = departments.find((d) => d.id === id);
+    return dep ? dep.nome : 'Desconhecido';
+  };
 
   // Filtrar professores
-  const filteredProfessors = professors.filter(p => {
+  const filteredProfessors = professors.filter((p) => {
     const matchesNameOrSpec =
       p.nome.toLowerCase().includes(search.toLowerCase()) ||
-      p.especializacao.toLowerCase().includes(search.toLowerCase())
+      p.especializacao.toLowerCase().includes(search.toLowerCase());
     const matchesDepartment = departmentFilter
       ? getDepartmentName(p.departamento_id) === departmentFilter
-      : true
-    return matchesNameOrSpec && matchesDepartment
-  })
+      : true;
+    return matchesNameOrSpec && matchesDepartment;
+  });
 
   // Professores visíveis
-  const visibleProfessors = filteredProfessors.slice(0, visibleCount)
+  const visibleProfessors = filteredProfessors.slice(0, visibleCount);
 
   return (
     <section className="py-16 bg-white" id="professores">
@@ -245,8 +245,10 @@ const ProfessorsSection = ({ onProfessorClick, professors, departments }) => {
                 onChange={(e) => setDepartmentFilter(e.target.value)}
               >
                 <option value="">Todos os Departamentos</option>
-                {departments.map(d => (
-                  <option key={d.id} value={d.nome}>{d.nome}</option>
+                {departments.map((d) => (
+                  <option key={d.id} value={d.nome}>
+                    {d.nome}
+                  </option>
                 ))}
               </select>
             </div>
@@ -295,9 +297,7 @@ const ProfessorsSection = ({ onProfessorClick, professors, departments }) => {
                   <div className="flex justify-between items-center mb-4 text-sm text-gray-600">
                     <span>{professor.estudantesOrientados} estudantes orientados</span>
                     {professor.oportunidades > 0 && (
-                      <Badge className="bg-green-100 text-green-800">
-                        Vagas disponíveis
-                      </Badge>
+                      <Badge className="bg-green-100 text-green-800">Vagas disponíveis</Badge>
                     )}
                   </div>
 
@@ -339,7 +339,7 @@ const ProfessorsSection = ({ onProfessorClick, professors, departments }) => {
               variant="outline"
               size="lg"
               className="border-green-700 text-green-700 hover:bg-green-700 hover:text-white cursor-pointer"
-              onClick={() => setVisibleCount(prev => prev + 10)}
+              onClick={() => setVisibleCount((prev) => prev + 10)}
             >
               Ver mais professores
             </Button>
@@ -347,7 +347,7 @@ const ProfessorsSection = ({ onProfessorClick, professors, departments }) => {
         )}
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default ProfessorsSection
+export default ProfessorsSection;
