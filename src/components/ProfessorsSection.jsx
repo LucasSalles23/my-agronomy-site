@@ -8,7 +8,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
   const [professors, setProfessors] = useState([])
   const [search, setSearch] = useState('')
   const [departmentFilter, setDepartmentFilter] = useState('')
-  const [visibleCount, setVisibleCount] = useState(10)
+  const [visibleCount, setVisibleCount] = useState(10) // ✅ mostra 10 inicialmente
 
   // Buscar professores do backend
   useEffect(() => {
@@ -18,9 +18,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
         setProfessors(res.data)
       })
       .catch((err) => console.error("Erro ao buscar professores:", err))
-  }, []);
-
-
+  }, [])
 
   // Filtrar professores
   const filteredProfessors = professors.filter(p => {
@@ -140,8 +138,8 @@ const ProfessorsSection = ({ onProfessorClick }) => {
                 </div>
               </div>
 
-              {/* Inserir anúncio a cada 2 professores (para testar) */}
-              {(index + 1) % 2 === 0 && (
+              {/* Inserir anúncio a cada 4 professores */}
+              {(index + 1) % 4 === 0 && (
                 <div
                   key={`ad-${index}`}
                   className="border border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-600 bg-gray-50 hover:bg-gray-100 transition"
@@ -154,7 +152,6 @@ const ProfessorsSection = ({ onProfessorClick }) => {
           ))}
         </div>
 
-
         {/* Botão Ver mais */}
         {visibleCount < filteredProfessors.length && (
           <div className="text-center mt-12">
@@ -162,7 +159,7 @@ const ProfessorsSection = ({ onProfessorClick }) => {
               variant="outline"
               size="lg"
               className="border-green-700 text-green-700 hover:bg-green-700 hover:text-white cursor-pointer"
-              onClick={() => setVisibleCount(prev => prev + 5)}
+              onClick={() => setVisibleCount(prev => prev + 10)} // ✅ agora carrega +10
             >
               Ver mais professores
             </Button>

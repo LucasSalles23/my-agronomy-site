@@ -60,12 +60,11 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Departamentos</h3>
             <ul className="space-y-2 text-gray-300">
-              <li>Ciência do Solo</li>
-              <li>Genética</li>
-              <li>Fitopatologia</li>
-              <li>Ciências Florestais</li>
-              <li>Produção Vegetal</li>
-              <li>Entomologia</li>
+              <li>Anatomia</li>
+              <li>Botânica</li>
+              <li>Fisiologia</li>
+              <li>Zootecnia</li>
+              <li>Física</li>
             </ul>
           </div>
 
@@ -76,14 +75,14 @@ const Footer = () => {
               <div className="flex items-center">
                 <MapPin className="h-5 w-5 mr-3 text-green-400" />
                 <span className="text-gray-300">
-                  Av. Pádua Dias, 11<br />
-                  Piracicaba - SP<br />
-                  CEP: 13418-900
+                  Rua dos Funcionários, 1500<br />
+                  Curitiba - PR<br />
+                  CEP: 80035-050
                 </span>
               </div>
               <div className="flex items-center">
                 <Phone className="h-5 w-5 mr-3 text-green-400" />
-                <span className="text-gray-300">+55 (19) 3429-4100</span>
+                <span className="text-gray-300">+55 (41) 98899-2269</span>
               </div>
               <div className="flex items-center">
                 <Mail className="h-5 w-5 mr-3 text-green-400" />
