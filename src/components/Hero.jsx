@@ -55,7 +55,7 @@ const Hero = ({ onOpportunitiesClick, onProfessorsClick }) => {
     <section className="bg-gradient-to-br from-green-50 to-green-100 py-16 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 mb-6 titulo-moderno">
             Impulso <span className="text-green-700">Agro</span>
           </h1>
           <p className="text-xl lg:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
